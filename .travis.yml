@@ -1,0 +1,11 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+before_install:
+  - wget https://gist.github.com/turbolent/f5215c9944badf640de7/raw/lemmatizer-model
+
+cache:
+  directories:
+  - $HOME/.m2
