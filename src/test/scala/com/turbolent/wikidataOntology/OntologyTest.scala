@@ -1945,5 +1945,35 @@ class OntologyTest extends TestCase {
 
       assertEquals(expected, compiled)
     }
+    {
+      val tokens = tokenize("Who/WP are/VBP the/DT children/NNS of/IN Clinton/NNP 's/POS spouse/NNS")
+
+      val result = parseListQuestion(tokens)
+
+      assertSuccess(result)
+
+      println(result)
+
+      // ListQuestion(RelationshipQuery(NamedQuery(List(Token("the", "DT"), Token("children", "NNS"))),
+      //   RelationshipQuery(NamedQuery(List(Token("spouse", "NNS"))),
+      //     NamedQuery(List(Token("Clinton", "NNP"))), Token("'s", "POS")), Token("of", "IN")))
+
+      val compiled = compile(result.get)
+
+      val env = new WikidataEnvironment()
+
+      val clinton = env.newNode()
+          .out(NameLabel, "Clinton")
+
+      val spouse = env.newNode()
+          .in(clinton, P.hasSpouse)
+
+      val child = env.newNode()
+          .in(spouse, P.hasChild)
+
+      val expected = List(child)
+
+      assertEquals(expected, compiled)
+    }
   }
 }
