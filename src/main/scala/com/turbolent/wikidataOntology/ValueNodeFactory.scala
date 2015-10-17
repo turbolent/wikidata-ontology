@@ -24,7 +24,10 @@ object ValueNodeFactory {
       "child" -> { (node, env) =>
         node.in(env.newNode(), P.hasChild)
       },
-      "planet" -> Q.planet)
+      "planet" -> Q.planet,
+      "humans" -> Q.human,
+      "people" -> Q.human,
+      "person" -> Q.human)
 
   val adjectiveFactories: Map[String, NodeFactory] =
     Map("most" -> {
