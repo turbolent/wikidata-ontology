@@ -25,6 +25,7 @@ object ValuePropertyEdgeFactory {
       ("be film", "in") -> P.hasFilmingLocation,
       ("be speak", "in") -> reverse(P.hasOfficialLanguage),
       ("be author", "by") -> P.hasAuthor,
+      ("be write", "by") -> P.hasAuthor,
       ("locate", "in") -> P.isLocatedIn,
       ("discover", "") -> reverse(P.hasDiscovererOrInventor),
       ("invent", "") -> reverse(P.hasDiscovererOrInventor)

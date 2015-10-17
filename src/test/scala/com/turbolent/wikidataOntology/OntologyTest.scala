@@ -5,8 +5,8 @@ import java.time.Year
 
 import com.turbolent.lemmatizer.Lemmatizer
 import com.turbolent.questionCompiler.QuestionCompiler
-import com.turbolent.questionCompiler.graph.{Count, GreaterThanFilter, LessThanFilter, Max}
-import com.turbolent.questionParser.{BaseParser, ListParser, Token, ast}
+import com.turbolent.questionCompiler.graph.{LessThanFilter, GreaterThanFilter, Max, Count}
+import com.turbolent.questionParser.{ListParser, BaseParser, Token, ast}
 import junit.framework.TestCase
 import org.hamcrest.CoreMatchers.instanceOf
 import org.hamcrest.Matcher
@@ -1952,8 +1952,6 @@ class OntologyTest extends TestCase {
 
       assertSuccess(result)
 
-      println(result)
-
       // ListQuestion(RelationshipQuery(NamedQuery(List(Token("the", "DT"), Token("children", "NNS"))),
       //   RelationshipQuery(NamedQuery(List(Token("spouse", "NNS"))),
       //     NamedQuery(List(Token("Clinton", "NNP"))), Token("'s", "POS")), Token("of", "IN")))
@@ -1972,6 +1970,32 @@ class OntologyTest extends TestCase {
           .in(spouse, P.hasChild)
 
       val expected = List(child)
+
+      assertEquals(expected, compiled)
+    }
+    {
+      val tokens = tokenize("Which/WDT books/NNS were/VBD written/VBN by/IN Jane/NNP Austen/NNP")
+
+      val result = parseListQuestion(tokens)
+
+      assertSuccess(result)
+
+      // ListQuestion(QueryWithProperty(NamedQuery(List(Token("books", "NNS"))),
+      //   PropertyWithFilter(List(Token("were", "VBD"), Token("written", "VBN")),
+      //     FilterWithModifier(List(Token("by", "IN")),
+      //       NamedValue(List(Token("Jane", "NNP"), Token("Austen", "NNP")))))))
+
+      val compiled = compile(result.get)
+
+      val env = new WikidataEnvironment()
+
+      val book = env.newNode()
+          .out(P.isA, Q.book)
+
+      val author = env.newNode()
+          .out(NameLabel, "Jane Austen")
+
+      val expected = List(book.out(P.hasAuthor, author))
 
       assertEquals(expected, compiled)
     }
