@@ -6,6 +6,13 @@ jdk:
 before_install:
   - wget https://gist.github.com/turbolent/f5215c9944badf640de7/raw/lemmatizer-model
 
+env:
+  global:
+    secure: "jgGYC5CSDDBqMc5LunAB4vpjWE4TggjdfXe4rToSa2nSifgy+FMH1dvCNqPeBcXMxd0jOZV/yTfXrQHV0wL0wvJUUA1qAB19FRiH/CDKcrWmBkFwHW+Z0f+9xWAL/3ks95Eg4+nEhj5J5wNSVqf7Yzb6oSiiIWBOxtZXd5j4tFWEEldh4nMoKrDPKcPutJMCtF89YUsJaHg1ckPlj2oOzrGfm1LpglcfqBsM7MXwa0DEzSKO++No3j41YhdT6B9WlScnq673NUyfmA91V5s1Jha5ftr9xvx1euWbkfZ0MVa9D6YZ6M+2mIEGxXdr4E/L46kQHLEu2Pylbba1emlIYy9KVAQKdUwhwVNRxyu/n78h3NBJPNMrdcrbadkLkDmovrnJwGnt1Z2xmFmz0cQaTe6Lj3Fu0zgmVrVvMBncE/HV7DOM6qHJqIW0cKPAK7zwDMhJQwzL5eNSxqyMauA0aHylGuooSpQSgwU6N395QTU+CmPV82T4EK30u5ROZAUbxIddLhBlCN2rOGSwXqMS7b+eCLWPLXWbIJEe4J51HGNduWFNt8+1nU8o1Ohu/ygc0KeYlYUgXHiN0J2Pz7YWJnIF+Sfq6boXqMU59alVIEQqj15hmyHucSUQJCm7sf23OmBPNxbt+PuY+gVYx726LNf8ELUhPSGIVwm4e85Ssew="
+
+after_success:
+  - .travis/deploy.sh
+
 cache:
   directories:
   - $HOME/.m2
