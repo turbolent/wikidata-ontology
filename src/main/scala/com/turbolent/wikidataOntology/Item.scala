@@ -7,6 +7,9 @@ package object Q {
   val human = Item(5, "human")
   val city = Item(515, "city")
   val book = Item(571, "book")
+  val year = Item(577, "year")
+  val planet = Item(634, "planet")
+  val country = Item(6256, "country")
   val mountain = Item(8502, "mountain")
   val movie = Item(11424, "movie")
   val president = Item(30461, "president")
@@ -20,5 +23,4 @@ package object Q {
   val filmDirector = Item(2526255, "film director")
   val male = Item(6581097, "male")
   val female = Item(6581072, "female")
-  val planet = Item(634, "planet")
 }

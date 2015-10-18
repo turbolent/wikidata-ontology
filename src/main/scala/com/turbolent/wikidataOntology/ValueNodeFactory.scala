@@ -27,7 +27,9 @@ object ValueNodeFactory {
       "planet" -> Q.planet,
       "humans" -> Q.human,
       "people" -> Q.human,
-      "person" -> Q.human)
+      "person" -> Q.human,
+      "country" -> Q.country,
+      "year" -> Q.year)
 
   val adjectiveFactories: Map[String, NodeFactory] =
     Map("most" -> {

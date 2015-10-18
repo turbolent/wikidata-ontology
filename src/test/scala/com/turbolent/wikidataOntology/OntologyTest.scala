@@ -1999,5 +1999,63 @@ class OntologyTest extends TestCase {
 
       assertEquals(expected, compiled)
     }
+    {
+      val tokens = tokenize("Which/WDT country/NN was/VBD Obama/NNP born/VBN in/IN")
+
+      val result = parseListQuestion(tokens)
+      assertSuccess(result)
+
+      // ListQuestion(QueryWithProperty(NamedQuery(List(Token("country", "NN"))),
+      //   InversePropertyWithFilter(List(Token("was", "VBD"), Token("born", "VBN"),
+      //     Token("in", "IN")),
+      //     PlainFilter(NamedValue(List(Token("Obama", "NNP")))))))
+
+      val compiled = compile(result.get)
+
+      val env = new WikidataEnvironment()
+
+      val country = env.newNode()
+          .out(P.isA, Q.country)
+
+      val obama = env.newNode()
+          .out(NameLabel, "Obama")
+
+      val place = env.newNode()
+          .in(obama, P.hasPlaceOfBirth)
+
+      val expected = List(country
+          .in(place, P.country))
+
+      assertEquals(expected, compiled)
+    }
+    {
+      val tokens = tokenize("Which/WDT year/NN was/VBD Obama/NNP born/VBN in/IN")
+
+      val result = parseListQuestion(tokens)
+      assertSuccess(result)
+
+      // ListQuestion(QueryWithProperty(NamedQuery(List(Token("year", "NN"))),
+      //   InversePropertyWithFilter(List(Token("was", "VBD"), Token("born", "VBN"),
+      //     Token("in", "IN")),
+      //     PlainFilter(NamedValue(List(Token("Obama", "NNP")))))))
+
+      val compiled = compile(result.get)
+
+      val env = new WikidataEnvironment()
+
+      val year = env.newNode()
+          .out(P.isA, Q.year)
+
+      val obama = env.newNode()
+          .out(NameLabel, "Obama")
+
+      val date = env.newNode()
+          .in(obama, P.hasDateOfBirth)
+
+      val expected = List(year
+          .in(date, YearLabel))
+
+      assertEquals(expected, compiled)
+    }
   }
 }

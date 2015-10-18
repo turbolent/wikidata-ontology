@@ -10,3 +10,7 @@ case class PropertyLabel(property: Property) extends EdgeLabel {
 case object NameLabel extends EdgeLabel {
   override def toString = "name"
 }
+
+case object YearLabel extends EdgeLabel {
+  override def toString = "year"
+}

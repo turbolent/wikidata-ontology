@@ -1,6 +1,6 @@
 package com.turbolent.wikidataOntology
 
-import com.turbolent.questionCompiler.EdgeContext
+import com.turbolent.questionCompiler.{NamedSubject, EdgeContext}
 import com.turbolent.questionParser.{ListParser, Token}
 import Tokens._
 
@@ -13,6 +13,23 @@ object InversePropertyEdgeFactory {
       "write" -> P.hasAuthor,
       "direct" -> P.hasDirector,
       "play" -> contextfulReverse(P.playsInstrument),
+      "bear in" -> { (node, context, env) =>
+        context.subject match {
+          case NamedSubject(subject) =>
+            val lemmatizedSubject =
+              mkLemmaString(stripInitialAuxiliaryVerb(subject))
+            lemmatizedSubject match {
+              case "country" =>
+                val place = env.newNode()
+                    .in(node, P.hasPlaceOfBirth)
+                in(place, P.country)
+              case "year" =>
+                val date = env.newNode()
+                    .in(node, P.hasDateOfBirth)
+                in(date, YearLabel)
+            }
+        }
+      })
 
   def stripInitialAuxiliaryVerb(name: Seq[Token]) =
     name match {
