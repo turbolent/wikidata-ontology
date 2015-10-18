@@ -6,7 +6,7 @@ import Tokens._
 
 object HaveEdgeFactory {
 
-  val factories: Map[String, EdgeFactory] =
+  val factories: Map[String, ContextfulEdgeFactory] =
     Map("child" -> P.hasChild,
       "inhabitant" -> P.hasPopulation)
 
@@ -20,7 +20,7 @@ object HaveEdgeFactory {
       else
         mkLemmaString(context.value)
     factories.get(key) map {
-      _(node, env)
+      _(node, context, env)
     } getOrElse {
       val message = s"No 'have' property edge factory for context: $context"
       throw new RuntimeException(message)

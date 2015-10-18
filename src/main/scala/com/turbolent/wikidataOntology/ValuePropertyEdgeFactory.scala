@@ -9,13 +9,13 @@ import Tokens._
 
 object ValuePropertyEdgeFactory {
 
-  val factories: Map[(String, String), EdgeFactory] =
-    Map(("act", "in") -> reverse(P.hasCastMember),
+  val factories: Map[(String, String), ContextfulEdgeFactory] =
+    Map(("act", "in") -> contextfulReverse(P.hasCastMember),
       ("direct", "by") -> P.hasDirector,
-      ("star", "in") -> reverse(P.hasCastMember),
+      ("star", "in") -> contextfulReverse(P.hasCastMember),
       ("star", "") -> P.hasCastMember,
-      ("direct", "") -> reverse(P.hasDirector),
-      ("write", "") -> reverse(P.hasAuthor),
+      ("direct", "") -> contextfulReverse(P.hasDirector),
+      ("write", "") -> contextfulReverse(P.hasAuthor),
       ("die", "in") -> P.hasPlaceOfDeath,
       ("be bear", "in") -> P.hasPlaceOfBirth,
       ("bear", "in") -> P.hasPlaceOfBirth,
@@ -23,12 +23,12 @@ object ValuePropertyEdgeFactory {
       ("marry", "") -> P.hasSpouse,
       // TODO: or date
       ("be film", "in") -> P.hasFilmingLocation,
-      ("be speak", "in") -> reverse(P.hasOfficialLanguage),
+      ("be speak", "in") -> contextfulReverse(P.hasOfficialLanguage),
       ("be author", "by") -> P.hasAuthor,
       ("be write", "by") -> P.hasAuthor,
       ("locate", "in") -> P.isLocatedIn,
-      ("discover", "") -> reverse(P.hasDiscovererOrInventor),
-      ("invent", "") -> reverse(P.hasDiscovererOrInventor)
+      ("discover", "") -> contextfulReverse(P.hasDiscovererOrInventor),
+      ("invent", "") -> contextfulReverse(P.hasDiscovererOrInventor)
     )
 
 }
@@ -52,7 +52,7 @@ trait ValuePropertyEdgeFactory {
     val lemmatizedFilter = mkLemmaString(context.filter)
     val key = (lemmatizedProperty, lemmatizedFilter)
     factories.get(key) map {
-      _(node, env)
+      _(node, context, env)
     } getOrElse {
       val message = s"No value property edge factory for '$lemmatizedProperty' " +
                     s"(${propertyName.mkString(", ")}), context: $context"

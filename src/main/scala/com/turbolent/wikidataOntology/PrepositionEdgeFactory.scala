@@ -7,13 +7,13 @@ import Tokens._
 
 object PrepositionEdgeFactory {
 
-  val namedFactories: Map[(String, String), EdgeFactory] =
+  val namedFactories: Map[(String, String), ContextfulEdgeFactory] =
     Map(("city", "in") -> P.isLocatedIn,
       ("book", "by") -> P.hasAuthor)
 
-  val personFactories: Map[String, EdgeFactory] = Map()
+  val personFactories: Map[String, ContextfulEdgeFactory] = Map()
 
-  val thingFactories: Map[String, EdgeFactory] = Map()
+  val thingFactories: Map[String, ContextfulEdgeFactory] = Map()
 
   def isPrepositionProperty(name: Seq[Token], filter: Seq[Token]) =
     (name, filter) match {
@@ -39,7 +39,7 @@ object PrepositionEdgeFactory {
     }
 
     factory map {
-      _(node, env)
+      _(node, context, env)
     } getOrElse {
       val message = s"No preposition property edge factory for context: $context"
       throw new RuntimeException(message)

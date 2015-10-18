@@ -7,12 +7,12 @@ import Tokens._
 
 object InversePropertyEdgeFactory {
 
-  val factories: Map[String, EdgeFactory] =
+  val factories: Map[String, ContextfulEdgeFactory] =
     Map("appear" -> P.hasCastMember,
       "marry" -> P.hasSpouse,
       "write" -> P.hasAuthor,
       "direct" -> P.hasDirector,
-      "play" -> reverse(P.playsInstrument))
+      "play" -> contextfulReverse(P.playsInstrument),
 
   def stripInitialAuxiliaryVerb(name: Seq[Token]) =
     name match {
@@ -31,7 +31,9 @@ trait InversePropertyEdgeFactory {
     import InversePropertyEdgeFactory._
 
     val lemmatized = mkLemmaString(stripInitialAuxiliaryVerb(name))
-    factories.get(lemmatized) map { _(node, env) } getOrElse {
+    factories.get(lemmatized) map {
+      _(node, context, env)
+    } getOrElse {
       throw new RuntimeException(s"No inverse property edge factory for '$lemmatized' " +
                                  s"(${name.mkString(", ")}), context: $context")
     }

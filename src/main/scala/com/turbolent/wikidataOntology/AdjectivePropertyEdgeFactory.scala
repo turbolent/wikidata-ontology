@@ -7,21 +7,21 @@ import Tokens._
 
 object AdjectivePropertyEdgeFactory {
 
-  val factories: Map[String, EdgeFactory] =
+  val factories: Map[String, ContextfulEdgeFactory] =
     Map("be high" -> P.hasElevation)
 
 }
 
 trait AdjectivePropertyEdgeFactory {
 
-  def makeAdjectivePropertyEdge(name: Seq[Token], node: WikidataNode,
-                                context: EdgeContext, env: WikidataEnvironment): WikidataEdge =
+  def makeAdjectivePropertyEdge(name: Seq[Token], node: WikidataNode, context: EdgeContext,
+                                env: WikidataEnvironment): WikidataEdge =
   {
     import AdjectivePropertyEdgeFactory._
 
     val lemmatized = mkLemmaString(name)
     factories.get(lemmatized) map {
-      _(node, env)
+      _(node, context, env)
     } getOrElse {
       throw new RuntimeException(s"No adjective property edge factory for '$lemmatized' " +
                                  s"(${name.mkString(", ")}), context: $context")

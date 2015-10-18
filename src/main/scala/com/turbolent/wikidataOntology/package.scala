@@ -2,6 +2,7 @@ package com.turbolent.wikidataOntology
 
 import java.time.temporal.Temporal
 
+import com.turbolent.questionCompiler.EdgeContext
 import com.turbolent.questionCompiler.graph._
 
 
@@ -39,13 +40,21 @@ object `package` {
 
   type NodeFactory = (WikidataNode, WikidataEnvironment) => WikidataNode
   type EdgeFactory = (WikidataNode, WikidataEnvironment) => WikidataEdge
+  type ContextfulEdgeFactory = (WikidataNode, EdgeContext, WikidataEnvironment) => WikidataEdge
 
   implicit def asNodeFactory(item: Item): NodeFactory =
     (node, env) => node.out(P.isA, item)
 
-  implicit def asOutEdgeFactory(property: Property): EdgeFactory =
+  implicit def asContextfulEdgeFactory(property: Property): ContextfulEdgeFactory =
+    (node, context, env) => out(property, node)
+
+  implicit def asEdgeFactory(property: Property): EdgeFactory =
     (node, env) => out(property, node)
 
   def reverse(property: Property): EdgeFactory =
     (node, env) => in(node, property)
+
+  def contextfulReverse(property: Property): ContextfulEdgeFactory =
+    (node, context, env) => in(node, property)
+
 }

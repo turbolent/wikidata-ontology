@@ -11,8 +11,8 @@ object ComparativePropertyEdgeFactory {
 
   type FilterFactory = (WikidataNode) => WikidataFilter
 
-  def makeComparisonFactory(property: Property, filterFactory: FilterFactory): EdgeFactory =
-    (node, env) => {
+  def makeComparisonFactory(property: Property, filterFactory: FilterFactory): ContextfulEdgeFactory =
+    (node, context, env) => {
       val otherArea = env.newNode()
           .in(node, property)
       val filter = filterFactory(otherArea)
@@ -21,14 +21,14 @@ object ComparativePropertyEdgeFactory {
       out(property, area)
     }
 
-  val namedFactories: Map[(String, String, String), EdgeFactory] =
+  val namedFactories: Map[(String, String, String), ContextfulEdgeFactory] =
     Map(("city", "be", "bigger than") ->
         makeComparisonFactory(P.hasArea, GreaterThanFilter(_)),
       ("city", "live", "more than") -> P.hasPopulation)
 
-  val thingFactories: Map[(String, String), EdgeFactory] = Map()
+  val thingFactories: Map[(String, String), ContextfulEdgeFactory] = Map()
 
-  val personFactories: Map[(String, String), EdgeFactory] =
+  val personFactories: Map[(String, String), ContextfulEdgeFactory] =
     Map(("be", "older than") ->
         makeComparisonFactory(P.hasDateOfBirth, LessThanFilter(_)))
 
@@ -66,7 +66,7 @@ trait ComparativePropertyEdgeFactory {
     }
 
     factory map {
-      _(node, env)
+      _(node, context, env)
     } getOrElse {
       val message = s"No comparative property edge factory for '$lemmatizedProperty' " +
                     s"(${name.mkString(", ")}), context: $context"
