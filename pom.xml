@@ -13,6 +13,12 @@
             <id>github</id>
             <url>https://raw.githubusercontent.com/turbolent/mvn-repo/master/</url>
         </repository>
+        <snapshots>
+            <updatePolicy>always</updatePolicy>
+        </snapshots>
+        <releases>
+            <updatePolicy>always</updatePolicy>
+        </releases>
     </repositories>
 
     <dependencies>
