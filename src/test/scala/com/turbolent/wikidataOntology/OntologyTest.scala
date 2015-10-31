@@ -92,7 +92,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q5
           |    { ?2  wdt:P161    ?1 ;
@@ -125,7 +125,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q5
           |    { ?2  wdt:P161    ?1 ;
@@ -157,7 +157,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q11424
           |    { ?1  wdt:P161    ?2 .
@@ -190,7 +190,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q11424
           |    { ?1  wdt:P161    ?2 .
@@ -225,7 +225,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q33999
           |    { ?2  wdt:P161    ?1 ;
@@ -257,7 +257,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
           |    { ?2  wdt:P57     ?1 ;
@@ -290,7 +290,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
           |    { ?1  wdt:P26     ?2 .
@@ -324,7 +324,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q8502
           |    { ?1  wdt:P2044  "1000.0"^^xsd:integer }
@@ -356,7 +356,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?2  wdt:P50     ?1 .
           |    ?1  wdt:P20     ?3 .
@@ -399,7 +399,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?2  wdt:P50     ?1 .
           |    ?1  wdt:P19     ?3 .
@@ -442,7 +442,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q5
           |      { ?1  wdt:P19     ?2 .
@@ -483,7 +483,7 @@ class OntologyTest extends TestCase {
 
       // TODO: extract year from ?2
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q30461
           |    { ?1  wdt:P569  ?2
@@ -523,7 +523,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q33999
           |      { ?1  wdt:P19     ?2 .
@@ -574,7 +574,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q11424
           |      { ?1  wdt:P915    ?2 .
@@ -624,7 +624,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { { ?1 wdt:P31/(wdt:P279)* wd:Q639669
           |      { ?1  wdt:P19     ?2 .
@@ -661,7 +661,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
           |    { ?1  wdt:P50     ?2 .
@@ -694,7 +694,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?1  wdt:P35     ?2 ;
           |        rdfs:label  "Argentina"@en
@@ -726,7 +726,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?2 wdt:P31/(wdt:P279)* wd:Q482994
           |    { ?2  wdt:P175    ?1 .
@@ -761,7 +761,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?2 wdt:P31/(wdt:P279)* wd:Q33999
           |    { ?1  wdt:P161    ?2 ;
@@ -796,7 +796,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?2 wdt:P31/(wdt:P279)* wd:Q2526255
           |    { ?1  wdt:P57     ?2 ;
@@ -831,7 +831,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?2  wdt:P463    ?1 .
           |    ?1  rdfs:label  "Metallica"@en
@@ -862,7 +862,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?2  wdt:P463    ?1 .
           |    ?1  rdfs:label  "Metallica"@en
@@ -896,7 +896,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?2 wdt:P31/(wdt:P279)* wd:Q189991
           |    { ?1  wdt:P136    ?2 ;
@@ -929,7 +929,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?1  wdt:P161    ?2 ;
           |        rdfs:label  "Friends"@en
@@ -962,7 +962,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?1  wdt:P40  ?2
           |    { ?1 wdt:P31/(wdt:P279)* wd:Q30461 }
@@ -1003,7 +1003,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?3
+          |SELECT DISTINCT  ?3
           |WHERE
           |  { ?1  wdt:P1082  ?3
           |    { ?1  wdt:P31/(wdt:P279)*  wd:Q515
@@ -1046,7 +1046,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?3
+          |SELECT DISTINCT  ?3
           |WHERE
           |  { ?2  wdt:P40     ?3 .
           |    ?1  wdt:P40     ?2 ;
@@ -1079,7 +1079,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?2  wdt:P21     wd:Q6581072 .
           |    ?1  wdt:P40     ?2 ;
@@ -1194,7 +1194,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?2  wdt:P21     wd:Q6581072 .
           |    ?1  wdt:P40     ?2 ;
@@ -1252,7 +1252,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?6
+          |SELECT DISTINCT  ?6
           |WHERE
           |  { ?6  wdt:P21     wd:Q6581097 ;
           |        wdt:P40     ?5 .
@@ -1309,7 +1309,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?4
+          |SELECT DISTINCT  ?4
           |WHERE
           |  { ?4  wdt:P21     wd:Q6581072 .
           |    ?3  wdt:P40     ?4 ;
@@ -1354,7 +1354,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?3
+          |SELECT DISTINCT  ?3
           |WHERE
           |  { ?3  wdt:P21  wd:Q6581097
           |    { ?2  wdt:P40  ?3
@@ -1397,7 +1397,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?3
+          |SELECT DISTINCT  ?3
           |WHERE
           |  { ?2  wdt:P40     ?3 .
           |    ?1  wdt:P35     ?2 ;
@@ -1431,7 +1431,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q11424
           |    { ?1  wdt:P57     ?2 .
@@ -1465,7 +1465,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q11424
           |    { ?1  wdt:P57     ?2 .
@@ -1493,7 +1493,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q33999 }
         """.stripMargin)
@@ -1525,7 +1525,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q34770
           |    { ?2  wdt:P37     ?1 ;
@@ -1566,7 +1566,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q571
           |      { ?1  wdt:P50     ?2 .
@@ -1606,7 +1606,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
           |    { ?1  wdt:P50     ?2 .
@@ -1641,7 +1641,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q34379
           |    { ?2  wdt:P1303   ?1 ;
@@ -1682,7 +1682,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { { ?1 wdt:P31/(wdt:P279)* wd:Q5
           |      { ?2  wdt:P50     ?1 ;
@@ -1718,7 +1718,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P50     ?2 .
           |    ?2  rdfs:label  "George Orwell"@en
@@ -1750,7 +1750,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P50     ?2 .
           |    ?2  rdfs:label  "George Orwell"@en
@@ -1784,7 +1784,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
           |    { ?1  wdt:P50     ?2 .
@@ -1817,7 +1817,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?2  wdt:P50  ?1
           |      { ?1  wdt:P570  ?3 }
@@ -1852,7 +1852,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?2  wdt:P50     ?1 .
           |    ?1  wdt:P20     ?3 .
@@ -1891,7 +1891,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q33999
           |    { ?1  wdt:P26     ?3 .
@@ -1931,7 +1931,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
           |    { ?1  wdt:P26     ?3 .
@@ -1975,7 +1975,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes.head)
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?2
+            |SELECT DISTINCT  ?2
             |WHERE
             |  { ?1  wdt:P40     ?2 ;
             |        rdfs:label  "Clinton"@en
@@ -1988,7 +1988,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(1))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?4
+            |SELECT DISTINCT  ?4
             |WHERE
             |  { ?3  wdt:P40     ?4 .
             |    ?1  wdt:P40     ?3 ;
@@ -2029,7 +2029,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes.head)
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?3
+            |SELECT DISTINCT  ?3
             |WHERE
             |  { ?1  wdt:P1082   ?3 ;
             |        rdfs:label  "China"@en
@@ -2042,7 +2042,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(1))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?4
+            |SELECT DISTINCT  ?4
             |WHERE
             |  { ?2  wdt:P1082   ?4 ;
             |        rdfs:label  "the USA"@en
@@ -2081,7 +2081,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes.head)
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?3
+            |SELECT DISTINCT  ?3
             |WHERE
             |  { ?1  wdt:P1082   ?3 ;
             |        rdfs:label  "Japan"@en
@@ -2094,7 +2094,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(1))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?4
+            |SELECT DISTINCT  ?4
             |WHERE
             |  { ?2  wdt:P1082   ?4 ;
             |        rdfs:label  "China"@en
@@ -2144,7 +2144,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes.head)
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?3
+            |SELECT DISTINCT  ?3
             |WHERE
             |  { ?1  wdt:P1082   ?3 ;
             |        rdfs:label  "Japan"@en
@@ -2157,7 +2157,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(1))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?4
+            |SELECT DISTINCT  ?4
             |WHERE
             |  { ?2  wdt:P1082   ?4 ;
             |        rdfs:label  "China"@en
@@ -2170,7 +2170,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(2))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?5
+            |SELECT DISTINCT  ?5
             |WHERE
             |  { ?1  wdt:P2046   ?5 ;
             |        rdfs:label  "Japan"@en
@@ -2183,7 +2183,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(3))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?6
+            |SELECT DISTINCT  ?6
             |WHERE
             |  { ?2  wdt:P2046   ?6 ;
             |        rdfs:label  "China"@en
@@ -2258,7 +2258,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes.head)
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?4
+            |SELECT DISTINCT  ?4
             |WHERE
             |  { ?1  wdt:P1082   ?4 ;
             |        rdfs:label  "Japan"@en
@@ -2271,7 +2271,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(1))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?5
+            |SELECT DISTINCT  ?5
             |WHERE
             |  { ?2  wdt:P1082   ?5 ;
             |        rdfs:label  "India"@en
@@ -2284,7 +2284,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(2))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?6
+            |SELECT DISTINCT  ?6
             |WHERE
             |  { ?3  wdt:P1082   ?6 ;
             |        rdfs:label  "China"@en
@@ -2297,7 +2297,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(3))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?7
+            |SELECT DISTINCT  ?7
             |WHERE
             |  { ?1  wdt:P2046   ?7 ;
             |        rdfs:label  "Japan"@en
@@ -2310,7 +2310,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(4))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?8
+            |SELECT DISTINCT  ?8
             |WHERE
             |  { ?2  wdt:P2046   ?8 ;
             |        rdfs:label  "India"@en
@@ -2323,7 +2323,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(5))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?9
+            |SELECT DISTINCT  ?9
             |WHERE
             |  { ?3  wdt:P2046   ?9 ;
             |        rdfs:label  "China"@en
@@ -2336,7 +2336,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(6))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?10
+            |SELECT DISTINCT  ?10
             |WHERE
             |  { ?1  wdt:P36     ?10 ;
             |        rdfs:label  "Japan"@en
@@ -2349,7 +2349,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(7))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?11
+            |SELECT DISTINCT  ?11
             |WHERE
             |  { ?2  wdt:P36     ?11 ;
             |        rdfs:label  "India"@en
@@ -2362,7 +2362,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(8))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?12
+            |SELECT DISTINCT  ?12
             |WHERE
             |  { ?3  wdt:P36     ?12 ;
             |        rdfs:label  "China"@en
@@ -2411,7 +2411,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes.head)
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?3
+            |SELECT DISTINCT  ?3
             |WHERE
             |  { ?1  wdt:P1082   ?3 ;
             |        rdfs:label  "Japan"@en
@@ -2424,7 +2424,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(1))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?4
+            |SELECT DISTINCT  ?4
             |WHERE
             |  { ?2  wdt:P1082   ?4 ;
             |        rdfs:label  "China"@en
@@ -2437,7 +2437,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(2))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?5
+            |SELECT DISTINCT  ?5
             |WHERE
             |  { ?1  wdt:P2046   ?5 ;
             |        rdfs:label  "Japan"@en
@@ -2450,7 +2450,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(3))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?6
+            |SELECT DISTINCT  ?6
             |WHERE
             |  { ?2  wdt:P2046   ?6 ;
             |        rdfs:label  "China"@en
@@ -2491,7 +2491,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes.head)
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?2
+            |SELECT DISTINCT  ?2
             |WHERE
             |  { ?1  wdt:P40     ?2 ;
             |        rdfs:label  "Clinton"@en
@@ -2504,7 +2504,7 @@ class OntologyTest extends TestCase {
         val actualQuery = compileSparqlQuery(expectedNodes(1))
 
         val expectedQuery = parseSparqlQuery("""
-            |SELECT  ?4
+            |SELECT DISTINCT  ?4
             |WHERE
             |  { ?3  wdt:P40     ?4 .
             |    ?1  wdt:P40     ?3 ;
@@ -2536,7 +2536,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
           |    { ?2  wdt:P50  ?1
@@ -2569,7 +2569,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q30461
           |    { ?1  wdt:P40  ?2 .
@@ -2632,7 +2632,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
           |    { ?1  wdt:P50     ?2 .
@@ -2673,7 +2673,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q515
           |    { ?1  wdt:P2046   ?4 .
@@ -2714,7 +2714,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q5
           |    { ?1  wdt:P569    ?4 .
@@ -2754,7 +2754,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q8502
           |    { ?1  wdt:P2044  ?2
@@ -2792,7 +2792,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q515
           |    { ?1  wdt:P1082  ?2
@@ -2834,7 +2834,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q515
           |    { ?1  wdt:P1082  ?2
@@ -2863,7 +2863,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?1  wdt:P61     ?2 ;
           |        rdfs:label  "Pluto"@en
@@ -2922,7 +2922,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?3
+          |SELECT DISTINCT  ?3
           |WHERE
           |  { ?2  wdt:P40     ?3 .
           |    ?1  wdt:P26     ?2 ;
@@ -2956,7 +2956,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
           |    { ?1  wdt:P50     ?2 .
@@ -2994,7 +2994,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q6256
           |    { ?3  wdt:P17     ?1 .
@@ -3052,7 +3052,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(root)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?3
+          |SELECT DISTINCT  ?3
           |WHERE
           |  { ?3 wdt:P31/(wdt:P279)* wd:Q5
           |      { ?1  wdt:P61     ?3 ;
@@ -3081,7 +3081,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(root)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
           |    { ?2  wdt:P161    ?1 ;
@@ -3104,7 +3104,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(root)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q8502
           |    { ?1  wdt:P2044   "1000.0"^^<http://www.w3.org/2001/XMLSchema#integer> }
@@ -3133,7 +3133,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(root)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?4
+          |SELECT DISTINCT  ?4
           |WHERE
           |  { ?4  wdt:P2046  ?3 .
           |    ?1  wdt:P2046  ?2
@@ -3176,7 +3176,7 @@ class OntologyTest extends TestCase {
 
       // TODO: extract year of ?2
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q30461 .
           |    { ?1  wdt:P569  ?2 .
@@ -3207,7 +3207,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(root)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?1
+          |SELECT DISTINCT  ?1
           |WHERE
           |  { ?1  wdt:P31/(wdt:P279)*  wd:Q515
           |    { { ?1  wdt:P2046  ?4 .
@@ -3238,7 +3238,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(root)
 
       val expectedQuery = parseSparqlQuery("""
-          |SELECT  ?2
+          |SELECT DISTINCT  ?2
           |WHERE
           |  { ?2  wdt:P2046  ?1 .
           |    FILTER ( ?1 > "23.0"^^xsd:double )
