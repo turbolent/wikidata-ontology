@@ -9,6 +9,7 @@ import org.apache.jena.datatypes.xsd.XSDDatatype
 import org.apache.jena.graph.{NodeFactory => JenaNodeFactory, Node => JenaNode}
 import org.apache.jena.query.Query
 import org.apache.jena.sparql.core.Var
+import org.apache.jena.sparql.path._
 
 
 object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
@@ -56,25 +57,38 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
         }
     }
 
-  val nestedProperties = Set(P.isLocatedIn)
+  def compilePropertyNode(property: Property) =
+    JenaNodeFactory.createURI(PROPERTY_BASE + "P" + property.id)
 
-  def compileProperty(property: Property): JenaNode = {
-    val node = JenaNodeFactory.createURI(PROPERTY_BASE + "P" + property.id)
-
-    // TODO:
-//    if (nestedProperties.contains(property)) {
-//      val link = PathFactory.pathLink(node)
-//      val path = PathFactory.pathOneOrMore1(link)
-    node
+  val instanceOfPath = {
+    val instanceOfPath = new P_Link(compilePropertyNode(P.isA))
+    val subclassOfPath = new P_Link(compilePropertyNode(P.isSubclassOf))
+    new P_Seq(instanceOfPath,
+      new P_ZeroOrMore1(subclassOfPath))
   }
 
-  override def compileEdgeLabel(label: EdgeLabel): JenaNode =
+  val transitiveProperties = Set(P.isLocatedIn)
+
+  def compileProperty(property: Property): Either[JenaNode, Path] = {
+    val node = compilePropertyNode(property)
+
+    if (property == P.isA) {
+      Right(instanceOfPath)
+    } else if (transitiveProperties.contains(property)) {
+      val link = new P_Link(node)
+      val path = new P_OneOrMore1(link)
+      Right(path)
+    } else
+      Left(node)
+  }
+
+  override def compileEdgeLabel(label: EdgeLabel): Either[JenaNode, Path] =
     label match {
       case PropertyLabel(property) =>
         compileProperty(property)
 
       case NameLabel =>
-        JenaNodeFactory.createURI(RDFS_BASE + "label")
+        Left(JenaNodeFactory.createURI(RDFS_BASE + "label"))
 
     }
 

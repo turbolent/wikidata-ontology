@@ -94,9 +94,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q5 .
-          |    ?2  wdt:P161    ?1 ;
-          |        rdfs:label  "Alien"@en
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q5
+          |    { ?2  wdt:P161    ?1 ;
+          |          rdfs:label  "Alien"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -126,9 +127,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q5 .
-          |    ?2  wdt:P161    ?1 ;
-          |        rdfs:label  "Inception"@en
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q5
+          |    { ?2  wdt:P161    ?1 ;
+          |         rdfs:label  "Inception"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -157,9 +159,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q11424 ;
-          |        wdt:P161    ?2 .
-          |    ?2  rdfs:label  "Winona Ryder"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q11424
+          |    { ?1  wdt:P161    ?2 .
+          |      ?2  rdfs:label  "Winona Ryder"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -189,9 +192,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q11424 ;
-          |        wdt:P161    ?2 .
-          |    ?2  rdfs:label  "Jennifer Aniston"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q11424
+          |    { ?1  wdt:P161    ?2 .
+          |      ?2  rdfs:label  "Jennifer Aniston"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -223,9 +227,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q33999 .
-          |    ?2  wdt:P161    ?1 ;
-          |        rdfs:label  "Inception"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q33999
+          |    { ?2  wdt:P161    ?1 ;
+          |          rdfs:label  "Inception"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -254,9 +259,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q5 .
-          |    ?2  wdt:P57     ?1 ;
-          |        rdfs:label  "Pocahontas"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
+          |    { ?2  wdt:P57     ?1 ;
+          |          rdfs:label  "Pocahontas"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -286,9 +292,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q5 ;
-          |        wdt:P26     ?2 .
-          |    ?2  rdfs:label  "Bill Clinton"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
+          |    { ?1  wdt:P26     ?2 .
+          |      ?2  rdfs:label  "Bill Clinton"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -319,8 +326,8 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31    wd:Q8502 ;
-          |        wdt:P2044  "1000.0"^^xsd:integer
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q8502
+          |    { ?1  wdt:P2044  "1000.0"^^xsd:integer }
           |  }
         """.stripMargin)
 
@@ -437,7 +444,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q5
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q5
           |      { ?1  wdt:P19     ?2 .
           |        ?2  rdfs:label  "Berlin"@en
           |      }
@@ -478,7 +485,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q30461
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q30461
           |    { ?1  wdt:P569  ?2
           |      FILTER ( ?2 < 1900 )
           |    }
@@ -518,7 +525,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q33999
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q33999
           |      { ?1  wdt:P19     ?2 .
           |        ?2  rdfs:label  "Berlin"@en
           |      }
@@ -569,7 +576,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q11424
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q11424
           |      { ?1  wdt:P915    ?2 .
           |        ?2  rdfs:label  "Germany"@en .
           |        ?1  wdt:P915    ?3 .
@@ -619,9 +626,11 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q639669 ;
-          |        wdt:P19     ?2 .
-          |    ?2  rdfs:label  "Vienna"@en .
+          |  { { ?1 wdt:P31/(wdt:P279)* wd:Q639669
+          |      { ?1  wdt:P19     ?2 .
+          |        ?2  rdfs:label  "Vienna"@en
+          |      }
+          |    }
           |    ?1  wdt:P20     ?3 .
           |    ?3  rdfs:label  "Berlin"@en
           |  }
@@ -654,9 +663,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q571 ;
-          |        wdt:P50     ?2 .
-          |    ?2  rdfs:label  "George Orwell"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
+          |    { ?1  wdt:P50     ?2 .
+          |      ?2  rdfs:label  "George Orwell"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -718,9 +728,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?2
           |WHERE
-          |  { ?2  wdt:P31     wd:Q482994 ;
-          |        wdt:P175    ?1 .
-          |    ?1  rdfs:label  "Pink Floyd"@en
+          |  { ?2 wdt:P31/(wdt:P279)* wd:Q482994
+          |    { ?2  wdt:P175    ?1 .
+          |      ?1  rdfs:label  "Pink Floyd"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -752,9 +763,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?2
           |WHERE
-          |  { ?2  wdt:P31     wd:Q33999 .
-          |    ?1  wdt:P161    ?2 ;
-          |        rdfs:label  "Titanic"@en
+          |  { ?2 wdt:P31/(wdt:P279)* wd:Q33999
+          |    { ?1  wdt:P161    ?2 ;
+          |          rdfs:label  "Titanic"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -786,9 +798,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?2
           |WHERE
-          |  { ?2  wdt:P31     wd:Q2526255 .
-          |    ?1  wdt:P57     ?2 ;
-          |        rdfs:label  "Big Fish"@en
+          |  { ?2 wdt:P31/(wdt:P279)* wd:Q2526255
+          |    { ?1  wdt:P57     ?2 ;
+          |          rdfs:label  "Big Fish"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -885,9 +898,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?2
           |WHERE
-          |  { ?2  wdt:P31     wd:Q189991 .
-          |    ?1  wdt:P136    ?2 ;
-          |        rdfs:label  "Gorillaz"@en
+          |  { ?2 wdt:P31/(wdt:P279)* wd:Q189991
+          |    { ?1  wdt:P136    ?2 ;
+          |          rdfs:label  "Gorillaz"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -950,8 +964,8 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?2
           |WHERE
-          |  { ?1  wdt:P40  ?2 ;
-          |        wdt:P31  wd:Q30461
+          |  { ?1  wdt:P40  ?2
+          |    { ?1 wdt:P31/(wdt:P279)* wd:Q30461 }
           |  }
         """.stripMargin)
 
@@ -991,10 +1005,12 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?3
           |WHERE
-          |  { ?1  wdt:P1082   ?3 ;
-          |        wdt:P31     wd:Q515 ;
-          |        wdt:P131    ?2 .
-          |    ?2  rdfs:label  "california"@en
+          |  { ?1  wdt:P1082  ?3
+          |    { ?1  wdt:P31/(wdt:P279)*  wd:Q515
+          |      { ?1 (wdt:P131)+ ?2
+          |        { ?2  rdfs:label  "california"@en }
+          |      }
+          |    }
           |  }
         """.stripMargin)
 
@@ -1340,11 +1356,14 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?3
           |WHERE
-          |  { ?3  wdt:P21     wd:Q6581097 .
-          |    ?2  wdt:P40     ?3 ;
-          |        wdt:P31     wd:Q33999 .
-          |    ?1  wdt:P161    ?2 ;
-          |        rdfs:label  "I , Robot"@en
+          |  { ?3  wdt:P21  wd:Q6581097
+          |    { ?2  wdt:P40  ?3
+          |      { ?2 wdt:P31/(wdt:P279)* wd:Q33999
+          |        { ?1  wdt:P161    ?2 ;
+          |              rdfs:label  "I , Robot"@en
+          |        }
+          |      }
+          |    }
           |  }
         """.stripMargin)
 
@@ -1414,9 +1433,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q11424 ;
-          |        wdt:P57     ?2 .
-          |    ?2  rdfs:label  "Quentin Tarantino"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q11424
+          |    { ?1  wdt:P57     ?2 .
+          |      ?2  rdfs:label  "Quentin Tarantino"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -1447,9 +1467,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q11424 ;
-          |        wdt:P57     ?2 .
-          |    ?2  rdfs:label  "Mel Gibson"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q11424
+          |    { ?1  wdt:P57     ?2 .
+          |      ?2  rdfs:label  "Mel Gibson"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -1474,7 +1495,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q33999 }
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q33999 }
         """.stripMargin)
 
       assertEquivalent(expectedQuery, actualQuery)
@@ -1506,9 +1527,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q34770 .
-          |    ?2  wdt:P37     ?1 ;
-          |        rdfs:label  "Switzerland"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q34770
+          |    { ?2  wdt:P37     ?1 ;
+          |          rdfs:label  "Switzerland"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -1546,7 +1568,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q571
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q571
           |      { ?1  wdt:P50     ?2 .
           |        ?2  rdfs:label  "Orwell"@en
           |      }
@@ -1586,9 +1608,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q571 ;
-          |        wdt:P50     ?2 .
-          |    ?2  rdfs:label  "George Orwell"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
+          |    { ?1  wdt:P50     ?2 .
+          |      ?2  rdfs:label  "George Orwell"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -1620,9 +1643,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q34379 .
-          |    ?2  wdt:P1303   ?1 ;
-          |        rdfs:label  "John Lennon"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q34379
+          |    { ?2  wdt:P1303   ?1 ;
+          |          rdfs:label  "John Lennon"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -1660,9 +1684,11 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q5 .
-          |    ?2  wdt:P50     ?1 ;
-          |        rdfs:label  "Le Petit Prince"@en .
+          |  { { ?1 wdt:P31/(wdt:P279)* wd:Q5
+          |      { ?2  wdt:P50     ?1 ;
+          |            rdfs:label  "Le Petit Prince"@en
+          |      }
+          |    }
           |    ?3  wdt:P50     ?1 ;
           |        rdfs:label  "Vol de Nuit"@en
           |  }
@@ -1760,9 +1786,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q571 ;
-          |        wdt:P50     ?2 .
-          |    ?2  rdfs:label  "George Orwell"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
+          |    { ?1  wdt:P50     ?2 .
+          |      ?2  rdfs:label  "George Orwell"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -1866,10 +1893,11 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q33999 ;
-          |        wdt:P26     ?3 .
-          |    ?2  wdt:P9      ?3 ;
-          |        rdfs:label  "John F. Kennedy"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q33999
+          |    { ?1  wdt:P26     ?3 .
+          |      ?2  wdt:P9      ?3 ;
+          |          rdfs:label  "John F. Kennedy"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -1905,11 +1933,12 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q5 ;
-          |        wdt:P26     ?3 .
-          |    ?3  wdt:P21     wd:Q6581072 .
-          |    ?2  wdt:P40     ?3 ;
-          |        rdfs:label  "Bill Clinton"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
+          |    { ?1  wdt:P26     ?3 .
+          |      ?3  wdt:P21     wd:Q6581072 .
+          |      ?2  wdt:P40     ?3 ;
+          |          rdfs:label  "Bill Clinton"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -2509,9 +2538,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q5 .
-          |    ?2  wdt:P50  ?1 ;
-          |        wdt:P31  wd:Q571
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
+          |    { ?2  wdt:P50  ?1
+          |      { ?2 wdt:P31/(wdt:P279)* wd:Q571 }
+          |    }
           |  }
         """.stripMargin)
 
@@ -2541,9 +2571,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q30461 ;
-          |        wdt:P40  ?2 .
-          |    ?3  wdt:P40  ?2
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q30461
+          |    { ?1  wdt:P40  ?2 .
+          |      ?3  wdt:P40  ?2
+          |    }
           |  }
         """.stripMargin)
 
@@ -2603,9 +2634,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q571 ;
-          |        wdt:P50     ?2 .
-          |    ?2  rdfs:label  "George Orwell"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
+          |    { ?1  wdt:P50     ?2 .
+          |      ?2  rdfs:label  "George Orwell"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -2643,7 +2675,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q515
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q515
           |    { ?1  wdt:P2046   ?4 .
           |      ?2  wdt:P2046   ?3 ;
           |          rdfs:label  "New York City"@en
@@ -2684,7 +2716,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q5
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q5
           |    { ?1  wdt:P569    ?4 .
           |      ?2  wdt:P569    ?3 ;
           |          rdfs:label  "Obama"@en
@@ -2724,7 +2756,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q8502
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q8502
           |    { ?1  wdt:P2044  ?2
           |      FILTER ( ?2 > "1000.0"^^xsd:integer )
           |    }
@@ -2762,7 +2794,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q515
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q515
           |    { ?1  wdt:P1082  ?2
           |      FILTER ( ?2 > "2000000.0"^^xsd:double )
           |    }
@@ -2804,7 +2836,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q515
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q515
           |    { ?1  wdt:P1082  ?2
           |      FILTER ( ?2 > "2000000.0"^^xsd:double )
           |    }
@@ -2926,9 +2958,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q571 ;
-          |        wdt:P50     ?2 .
-          |    ?2  rdfs:label  "Jane Austen"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q571
+          |    { ?1  wdt:P50     ?2 .
+          |      ?2  rdfs:label  "Jane Austen"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -2963,10 +2996,11 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q6256 .
-          |    ?3  wdt:P17     ?1 .
-          |    ?2  wdt:P19     ?3 ;
-          |        rdfs:label  "Obama"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q6256
+          |    { ?3  wdt:P17     ?1 .
+          |      ?2  wdt:P19     ?3 ;
+          |          rdfs:label  "Obama"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -3020,7 +3054,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?3
           |WHERE
-          |  { ?3  wdt:P31  wd:Q5
+          |  { ?3 wdt:P31/(wdt:P279)* wd:Q5
           |      { ?1  wdt:P61     ?3 ;
           |            rdfs:label  "Pluto"@en
           |      }
@@ -3049,9 +3083,10 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q5 .
-          |    ?2  wdt:P161    ?1 ;
-          |        rdfs:label  "Alien"@en
+          |  { ?1 wdt:P31/(wdt:P279)* wd:Q5
+          |    { ?2  wdt:P161    ?1 ;
+          |          rdfs:label  "Alien"@en
+          |    }
           |  }
         """.stripMargin)
 
@@ -3071,8 +3106,8 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31     wd:Q8502 .
-          |    ?1  wdt:P2044   "1000.0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q8502
+          |    { ?1  wdt:P2044   "1000.0"^^<http://www.w3.org/2001/XMLSchema#integer> }
           |  }
         """.stripMargin)
 
@@ -3143,7 +3178,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q30461 .
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q30461 .
           |    { ?1  wdt:P569  ?2 .
           |      FILTER(?2 < 1900)
           |    }
@@ -3174,7 +3209,7 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("""
           |SELECT  ?1
           |WHERE
-          |  { ?1  wdt:P31  wd:Q515
+          |  { ?1  wdt:P31/(wdt:P279)*  wd:Q515
           |    { { ?1  wdt:P2046  ?4 .
           |        ?2  wdt:P2046  ?3 .
           |        ?2  rdfs:label  "New York City"@en .
