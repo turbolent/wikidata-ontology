@@ -22,6 +22,8 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
   val XSD_BASE = "http://www.w3.org/2001/XMLSchema#"
   val WIKIBASE_BASE = "http://wikiba.se/ontology#"
   val BIGDATA_BASE = "http://www.bigdata.com/rdf#"
+  val STATEMENT_BASE = "http://www.wikidata.org/prop/"
+  val VALUE_BASE = "http://www.wikidata.org/prop/statement/"
 
   override def prepareQuery(query: Query) {
     query.setPrefix("wd", ENTITY_BASE)
@@ -30,6 +32,8 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
     query.setPrefix("xsd", XSD_BASE)
     query.setPrefix("wikibase", WIKIBASE_BASE)
     query.setPrefix("bd", BIGDATA_BASE)
+    query.setPrefix("p", STATEMENT_BASE)
+    query.setPrefix("v", VALUE_BASE)
   }
 
   def compileUnit(unit: Unit): RDFDatatype =
@@ -65,11 +69,25 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
   def compilePropertyNode(property: Property) =
     JenaNodeFactory.createURI(PROPERTY_BASE + "P" + property.id)
 
+  def compilePropertyStatementNode(property: Property) =
+    JenaNodeFactory.createURI(STATEMENT_BASE + "P" + property.id)
+
+  def compilePropertyValueNode(property: Property) =
+    JenaNodeFactory.createURI(VALUE_BASE + "P" + property.id)
+
+
   val instanceOfPath = {
-    val instanceOfPath = new P_Link(compilePropertyNode(P.isA))
+    // use `p:P31/v:P31/wdt:P279*` instead of plain wdt:P31:
+    //   - entities will may have several values for this property and they are only
+    //     accessible through the statement/value path
+    //   - instance relationships through superclasses are not automatically inferred
+
+    val instanceOfStatementPath = new P_Link(compilePropertyStatementNode(P.isA))
+    val instanceOfValuePath = new P_Link(compilePropertyValueNode(P.isA))
     val subclassOfPath = new P_Link(compilePropertyNode(P.isSubclassOf))
-    new P_Seq(instanceOfPath,
-      new P_ZeroOrMore1(subclassOfPath))
+    new P_Seq(instanceOfStatementPath,
+      new P_Seq(instanceOfValuePath,
+        new P_ZeroOrMore1(subclassOfPath)))
   }
 
   val transitiveProperties = Set(P.isLocatedIn)
