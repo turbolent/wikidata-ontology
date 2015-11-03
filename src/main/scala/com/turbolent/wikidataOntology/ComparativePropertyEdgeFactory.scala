@@ -28,9 +28,9 @@ object ComparativePropertyEdgeFactory {
 
   val thingFactories: Map[(String, String), ContextfulEdgeFactory] = Map()
 
-  val personFactories: Map[(String, String), ContextfulEdgeFactory] =
-    Map(("be", "older than") ->
-        makeComparisonFactory(P.hasDateOfBirth, LessThanFilter(_)))
+  val personFactories: Map[(String, String), ContextfulEdgeFactory] = Map(
+    // TODO: improve: take into account death date
+    ("be", "older than") -> makeComparisonFactory(P.hasDateOfBirth, LessThanFilter(_)))
 
 }
 

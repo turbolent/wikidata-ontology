@@ -355,9 +355,10 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?2  wdt:P50     ?1 .
-          |  ?1  wdt:P20     ?3 .
-          |  ?3  rdfs:label  "Berlin"@en
+          |{ ?2  wdt:P50  ?1
+          |  { ?1 wdt:P20/(wdt:P131)* ?3
+          |    { ?3  rdfs:label  "Berlin"@en }
+          |  }
           |}
         """.stripMargin)
 
@@ -396,11 +397,14 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?2  wdt:P50     ?1 .
-          |  ?1  wdt:P19     ?3 .
-          |  ?3  rdfs:label  "Berlin"@en .
-          |  ?1  wdt:P20     ?4 .
-          |  ?4  rdfs:label  "Paris"@en
+          |{ { ?2  wdt:P50  ?1
+          |    { ?1 wdt:P19/(wdt:P131)* ?3
+          |      { ?3  rdfs:label  "Berlin"@en }
+          |    }
+          |  }
+          |  { ?1 wdt:P20/(wdt:P131)* ?4
+          |    { ?4  rdfs:label  "Paris"@en }
+          |  }
           |}
         """.stripMargin)
 
@@ -437,13 +441,13 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q5
-          |    { ?1  wdt:P19     ?2 .
-          |      ?2  rdfs:label  "Berlin"@en
+          |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q5
+          |    { ?1 wdt:P19/(wdt:P131)* ?2
+          |      { ?2  rdfs:label  "Berlin"@en }
           |    }
           |  UNION
-          |    { ?1  wdt:P20     ?3 .
-          |      ?3  rdfs:label  "Paris"@en
+          |    { ?1 wdt:P20/(wdt:P131)* ?3
+          |      { ?3  rdfs:label  "Paris"@en }
           |    }
           |}
         """.stripMargin)
@@ -514,13 +518,13 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |    { ?1  wdt:P19     ?2 .
-          |      ?2  rdfs:label  "Berlin"@en
           |{ ?1 wdt:P106 wd:Q33999
+          |    { ?1 wdt:P19/(wdt:P131)* ?2
+          |      { ?2  rdfs:label  "Berlin"@en }
           |    }
           |  UNION
-          |    { ?1  wdt:P19     ?3 .
-          |      ?3  rdfs:label  "San Francisco"@en
+          |    { ?1 wdt:P19/(wdt:P131)* ?3
+          |      { ?3  rdfs:label  "San Francisco"@en }
           |    }
           |}
         """.stripMargin)
@@ -563,15 +567,17 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q11424
-          |    { ?1  wdt:P915    ?2 .
-          |      ?2  rdfs:label  "Germany"@en .
-          |      ?1  wdt:P915    ?3 .
-          |      ?3  rdfs:label  "Denmark"@en
+          |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q11424
+          |    { { ?1 wdt:P915/(wdt:P131)* ?2
+          |        { ?2  rdfs:label  "Germany"@en }
+          |      }
+          |      { ?1 wdt:P915/(wdt:P131)* ?3
+          |        { ?3  rdfs:label  "Denmark"@en }
+          |      }
           |    }
           |  UNION
-          |    { ?1  wdt:P915    ?4 .
-          |      ?4  rdfs:label  "California"@en
+          |    { ?1 wdt:P915/(wdt:P131)* ?4
+          |      { ?4  rdfs:label  "California"@en }
           |    }
           |}
         """.stripMargin)
@@ -612,12 +618,13 @@ class OntologyTest extends TestCase {
 
       val expectedQuery = parseSparqlQuery("1", """
           |{ { ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q639669
-          |    { ?1  wdt:P19     ?2 .
-          |      ?2  rdfs:label  "Vienna"@en
+          |    { ?1 wdt:P19/(wdt:P131)* ?2
+          |      { ?2  rdfs:label  "Vienna"@en }
           |    }
           |  }
-          |  ?1  wdt:P20     ?3 .
-          |  ?3  rdfs:label  "Berlin"@en
+          |  { ?1 wdt:P20/(wdt:P131)* ?3
+          |    { ?3  rdfs:label  "Berlin"@en }
+          |  }
           |}
         """.stripMargin)
 
@@ -1743,7 +1750,7 @@ class OntologyTest extends TestCase {
           |{ ?2  wdt:P50  ?1
           |    { ?1  wdt:P570  ?3 }
           |  UNION
-          |    { ?1  wdt:P20  ?3 }
+          |    { ?1  wdt:P20/(wdt:P131)*  ?3 }
           |}
         """.stripMargin)
 
@@ -1773,9 +1780,10 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?2  wdt:P50     ?1 .
-          |  ?1  wdt:P20     ?3 .
-          |  ?3  rdfs:label  "Berlin"@en
+          |{ ?2  wdt:P50  ?1
+          |  { ?1 wdt:P20/(wdt:P131)* ?3
+          |    { ?3  rdfs:label  "Berlin"@en }
+          |  }
           |}
         """.stripMargin)
 
@@ -2836,9 +2844,10 @@ class OntologyTest extends TestCase {
 
       val expectedQuery = parseSparqlQuery("1", """
           |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q6256
-          |  { ?3  wdt:P17     ?1 .
-          |    ?2  wdt:P19     ?3 ;
-          |        rdfs:label  "Obama"@en
+          |  { ?3  wdt:P17  ?1
+          |    { ?2 wdt:P19/(wdt:P131)* ?3
+          |      { ?2  rdfs:label  "Obama"@en }
+          |    }
           |  }
           |}
         """.stripMargin)
