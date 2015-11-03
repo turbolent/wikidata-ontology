@@ -461,7 +461,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val president = env.newNode()
-          .out(P.isA, Q.president)
+          .in(env.newNode(), P.hasHeadOfState)
 
       val year: WikidataNode = Year.of(1900)
 
@@ -476,9 +476,9 @@ class OntologyTest extends TestCase {
 
       // TODO: extract year from ?2
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q30461
-          |  { ?1  wdt:P569  ?2
-          |    FILTER ( ?2 < 1900 )
+          |{ ?2  wdt:P35  ?1
+          |  { ?1  wdt:P569  ?3
+          |    FILTER ( ?3 < 1900 )
           |  }
           |}
         """.stripMargin)
@@ -916,7 +916,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val president = env.newNode()
-          .out(P.isA, Q.president)
+          .in(env.newNode(), P.hasHeadOfState)
 
       val child = env.newNode()
           .in(president, P.hasChild)
@@ -927,9 +927,9 @@ class OntologyTest extends TestCase {
 
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
-      val expectedQuery = parseSparqlQuery("2", """
-          |{ ?1  wdt:P40  ?2
-          |  { ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q30461 }
+      val expectedQuery = parseSparqlQuery("3", """
+          |{ ?1  wdt:P40  ?3 .
+          |  ?2  wdt:P35  ?1
           |}
         """.stripMargin)
 
@@ -2419,7 +2419,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val president = env.newNode()
-          .out(P.isA, Q.president)
+          .in(env.newNode(), P.hasHeadOfState)
 
       val child = env.newNode()
           .in(env.newNode(), P.hasChild)
@@ -2431,10 +2431,9 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q30461
-          |  { ?1  wdt:P40  ?2 .
-          |    ?3  wdt:P40  ?2
-          |  }
+          |{ ?2  wdt:P35  ?1 .
+          |  ?1  wdt:P40  ?3 .
+          |  ?4  wdt:P40  ?3
           |}
         """.stripMargin)
 
@@ -2995,7 +2994,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val president = env.newNode()
-          .out(P.isA, Q.president)
+          .in(env.newNode(), P.hasHeadOfState)
 
       val year: WikidataNode = Year.of(1900)
 
@@ -3008,9 +3007,9 @@ class OntologyTest extends TestCase {
 
       // TODO: extract year of ?2
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q30461 .
-          |  { ?1  wdt:P569  ?2 .
-          |    FILTER(?2 < 1900)
+          |{ ?2  wdt:P35  ?1
+          |  { ?1  wdt:P569  ?3
+          |    FILTER ( ?3 < 1900 )
           |  }
           |}
         """.stripMargin)

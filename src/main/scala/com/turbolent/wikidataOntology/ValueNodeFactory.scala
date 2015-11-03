@@ -14,7 +14,9 @@ object ValueNodeFactory {
         node.out(P.hasOccupation, Q.actor)
       },
       "mountain" -> Q.mountain,
-      "president" -> Q.president,
+      "president" -> { (node, env) =>
+        node.in(env.newNode(), P.hasHeadOfState)
+      },
       "author" -> { (node, env) =>
         node.in(env.newNode(), P.hasAuthor)
       },
