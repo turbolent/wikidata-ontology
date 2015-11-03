@@ -221,7 +221,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val person = env.newNode()
-          .out(P.isA, Q.actor)
+          .out(P.hasOccupation, Q.actor)
 
       val movie = env.newNode()
           .out(NameLabel, "Inception")
@@ -233,10 +233,9 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q33999
-          |  { ?2  wdt:P161    ?1 ;
-          |        rdfs:label  "Inception"@en
-          |  }
+          |{ ?1  wdt:P106    wd:Q33999 .
+          |  ?2  wdt:P161    ?1 ;
+          |      rdfs:label  "Inception"@en
           |}
         """.stripMargin)
 
@@ -498,7 +497,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val actor = env.newNode()
-          .out(P.isA, Q.actor)
+          .out(P.hasOccupation, Q.actor)
 
       val place = env.newNode()
           .out(NameLabel, "Berlin")
@@ -515,9 +514,9 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q33999
           |    { ?1  wdt:P19     ?2 .
           |      ?2  rdfs:label  "Berlin"@en
+          |{ ?1 wdt:P106 wd:Q33999
           |    }
           |  UNION
           |    { ?1  wdt:P19     ?3 .
@@ -731,7 +730,7 @@ class OntologyTest extends TestCase {
           .out(NameLabel, "Titanic")
 
       val actor = env.newNode()
-          .out(P.isA, Q.actor)
+          .out(P.hasOccupation, Q.actor)
           .in(movie, P.hasCastMember)
 
       val expectedNodes = List(actor)
@@ -741,10 +740,9 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("2", """
-          |{ ?2 p:P31/(v:P31/(wdt:P279)*) wd:Q33999
-          |  { ?1  wdt:P161    ?2 ;
-          |        rdfs:label  "Titanic"@en
-          |  }
+          |{ ?2  wdt:P106    wd:Q33999 .
+          |  ?1  wdt:P161    ?2 ;
+          |      rdfs:label  "Titanic"@en
           |}
         """.stripMargin)
 
@@ -1294,7 +1292,7 @@ class OntologyTest extends TestCase {
           .out(NameLabel, "I , Robot")
 
       val actor = env.newNode()
-          .out(P.isA, Q.actor)
+          .out(P.hasOccupation, Q.actor)
           .in(movie, P.hasCastMember)
 
       val son = env.newNode()
@@ -1308,14 +1306,11 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("3", """
-          |{ ?3  wdt:P21  wd:Q6581097
-          |  { ?2  wdt:P40  ?3
-          |    { ?2 p:P31/(v:P31/(wdt:P279)*) wd:Q33999
-          |      { ?1  wdt:P161    ?2 ;
-          |            rdfs:label  "I , Robot"@en
-          |      }
-          |    }
-          |  }
+          |{ ?3  wdt:P21     wd:Q6581097 .
+          |  ?2  wdt:P40     ?3 ;
+          |      wdt:P106    wd:Q33999 .
+          |  ?1  wdt:P161    ?2 ;
+          |      rdfs:label  "I , Robot"@en
           |}
         """.stripMargin)
 
@@ -1430,7 +1425,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val actor = env.newNode()
-          .out(P.isA, Q.actor)
+          .out(P.hasOccupation, Q.actor)
 
       val expectedNodes = List(actor)
 
@@ -1439,7 +1434,7 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q33999 }
+          |{ ?1  wdt:P106  wd:Q33999 }
         """.stripMargin)
 
       assertEquivalent(expectedQuery, actualQuery)
@@ -1800,7 +1795,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val actor = env.newNode()
-          .out(P.isA, Q.actor)
+          .out(P.hasOccupation, Q.actor)
 
       val kennedy = env.newNode()
           .out(NameLabel, "John F. Kennedy")
@@ -1815,11 +1810,10 @@ class OntologyTest extends TestCase {
       val actualQuery = compileSparqlQuery(expectedNodes.head)
 
       val expectedQuery = parseSparqlQuery("1", """
-          |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q33999
-          |  { ?1  wdt:P26     ?3 .
-          |    ?2  wdt:P9      ?3 ;
-          |        rdfs:label  "John F. Kennedy"@en
-          |  }
+          |{ ?1  wdt:P106    wd:Q33999 ;
+          |      wdt:P26     ?3 .
+          |  ?2  wdt:P9      ?3 ;
+          |      rdfs:label  "John F. Kennedy"@en
           |}
         """.stripMargin)
 

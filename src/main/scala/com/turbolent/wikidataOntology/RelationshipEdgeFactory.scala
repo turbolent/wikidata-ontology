@@ -18,10 +18,10 @@ object RelationshipEdgeFactory {
           .and(in(node, P.hasChild))
 
   val factories: Map[String, EdgeFactory] =
-    Map(// NOTE: weaker form, not asserting instanceof president
+    Map(// NOTE: weaker form, not P.isA, Q.president
       "president" -> reverse(P.hasHeadOfState),
       "actor" -> { (node, env) =>
-        out(P.isA, Q.actor)
+        out(P.hasOccupation, Q.actor)
             .and(in(node, P.hasCastMember))
       },
       "album" -> { (node, env) =>

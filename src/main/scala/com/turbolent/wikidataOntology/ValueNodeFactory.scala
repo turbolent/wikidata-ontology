@@ -10,7 +10,9 @@ object ValueNodeFactory {
 
   val factories: Map[String, NodeFactory] =
     Map("movie" -> Q.movie,
-      "actor" -> Q.actor,
+      "actor" -> { (node, env) =>
+        node.out(P.hasOccupation, Q.actor)
+      },
       "mountain" -> Q.mountain,
       "president" -> Q.president,
       "author" -> { (node, env) =>
