@@ -80,20 +80,23 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
     new P_Seq(new P_Link(compilePropertyNode(property)),
       new P_ZeroOrMore1(new P_Link(compilePropertyNode(P.isLocatedIn))))
 
-  val paths: Map[Property, Path] =
-    Map(P.isA -> {
-      // use `p:P31/v:P31/wdt:P279*` instead of plain wdt:P31:
-      //   - entities will may have several values for this property and they are only
-      //     accessible through the statement/value path
-      //   - instance relationships through superclasses are not automatically inferred
+  def instanceOfSubclassPath(property: Property) = {
+    // use `p:P<ID>/v:P<ID>/wdt:P279*` instead of plain wdt:P<ID> (P279 = isSubclassOf):
+    //   - entities will may have several values for this property and they are only
+    //     accessible through the statement/value path
+    //   - instance relationships through superclasses are not automatically inferred
 
-      val instanceOfStatementPath = new P_Link(compilePropertyStatementNode(P.isA))
-      val instanceOfValuePath = new P_Link(compilePropertyValueNode(P.isA))
-      val subclassOfPath = new P_Link(compilePropertyNode(P.isSubclassOf))
-      new P_Seq(instanceOfStatementPath,
-        new P_Seq(instanceOfValuePath,
-          new P_ZeroOrMore1(subclassOfPath)))
-    },
+    val instanceOfStatementPath = new P_Link(compilePropertyStatementNode(property))
+    val instanceOfValuePath = new P_Link(compilePropertyValueNode(property))
+    val subclassOfPath = new P_Link(compilePropertyNode(P.isSubclassOf))
+    new P_Seq(instanceOfStatementPath,
+      new P_Seq(instanceOfValuePath,
+        new P_ZeroOrMore1(subclassOfPath)))
+  }
+
+  val paths: Map[Property, Path] =
+    Map(P.isA -> instanceOfSubclassPath(P.isA),
+      P.hasOccupation -> instanceOfSubclassPath(P.hasOccupation),
       P.isLocatedIn -> new P_OneOrMore1(new P_Link(compilePropertyNode(P.isLocatedIn))),
       P.hasPlaceOfBirth -> locatedInPath(P.hasPlaceOfBirth),
       P.hasPlaceOfDeath -> locatedInPath(P.hasPlaceOfDeath),
