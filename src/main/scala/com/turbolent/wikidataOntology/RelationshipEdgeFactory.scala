@@ -17,6 +17,39 @@ object RelationshipEdgeFactory {
       out(P.hasGender, gender)
           .and(in(node, P.hasChild))
 
+  def makeParentFactory(gender: Item): EdgeFactory =
+    (node, env) =>
+      out(P.hasGender, gender)
+          .and(out(P.hasChild, node))
+
+  def makeGrandparentFactory(gender: Option[Item]): EdgeFactory =
+    (node, env) => {
+      val child = env.newNode()
+          .out(P.hasChild, node)
+      val edge = out(P.hasChild, child)
+      gender map { gender =>
+        edge.and(out(P.hasGender, gender))
+      } getOrElse edge
+    }
+
+  def makeGrandchildFactory(gender: Option[Item]): EdgeFactory =
+    (node, env) => {
+      val parent = env.newNode()
+          .in(node, P.hasChild)
+      val edge = in(parent, P.hasChild)
+      gender map { gender =>
+        edge.and(out(P.hasGender, gender))
+      } getOrElse edge
+    }
+
+  def makeSpouseParentFactory(gender: Item): EdgeFactory =
+    (node, env) => {
+      val child = env.newNode()
+          .out(P.hasSpouse, node)
+      out(P.hasGender, gender)
+          .and(out(P.hasChild, child))
+    }
+
   val factories: Map[String, EdgeFactory] =
     Map(// NOTE: weaker form, not P.isA, Q.president
       "president" -> reverse(P.hasHeadOfState),
@@ -38,53 +71,34 @@ object RelationshipEdgeFactory {
             .and(in(node, P.hasGenre))
       },
       "cast" -> reverse(P.hasCastMember),
-      "sister" -> reverse(P.hasSister),
-      "child" -> reverse(P.hasChild),
       "population size" -> reverse(P.hasPopulation),
       "population" -> reverse(P.hasPopulation),
+      "sister" -> reverse(P.hasSister),
+      "brother" -> reverse(P.hasBrother),
+      "child" -> reverse(P.hasChild),
+      "parent" -> P.hasChild,
       "daughter" -> makeChildFactory(Q.female),
       "son" -> makeChildFactory(Q.male),
-      "city" -> { (node, env) =>
-        out(P.isA, Q.city)
-            .and(out(P.isLocatedIn, node))
-      },
+      "mother" -> makeParentFactory(Q.female),
+      "father" -> makeParentFactory(Q.male),
       "husband" -> makeSpouseFactory(Q.male),
       "wife" -> makeSpouseFactory(Q.female),
       "spouse" -> reverse(P.hasSpouse),
-      "grandfather" -> {
-        (node, env) => {
-          val child = env.newNode()
-              .out(P.hasChild, node)
-          out(P.hasGender, Q.male)
-              .and(out(P.hasChild, child))
-        }
-      },
-      "grandchild" -> {
-        (node, env) => {
-          val parent = env.newNode()
-              .in(node, P.hasChild)
-          in(parent, P.hasChild)
-        }
-      },
-      "father-in-law" -> {
-        (node, env) => {
-          val child = env.newNode()
-              .out(P.hasSpouse, node)
-          out(P.hasGender, Q.male)
-              .and(out(P.hasChild, child))
-        }
-      },
-      "mother-in-law" -> {
-        (node, env) => {
-          val child = env.newNode()
-              .out(P.hasSpouse, node)
-          out(P.hasGender, Q.female)
-              .and(out(P.hasChild, child))
-        }
-      },
+      "grandparent" -> makeGrandparentFactory(None),
+      "grandmother" -> makeGrandparentFactory(Some(Q.female)),
+      "grandfather" -> makeGrandparentFactory(Some(Q.male)),
+      "grandchild" -> makeGrandchildFactory(None),
+      "granddaughter" -> makeGrandchildFactory(Some(Q.female)),
+      "grandson" -> makeGrandchildFactory(Some(Q.male)),
+      "father-in-law" -> makeSpouseParentFactory(Q.male),
+      "mother-in-law" -> makeSpouseParentFactory(Q.female),
       "movie" -> { (node, env) =>
         out(P.isA, Q.movie)
             .and(out(P.hasDirector, node))
+      },
+      "city" -> { (node, env) =>
+        out(P.isA, Q.city)
+            .and(out(P.isLocatedIn, node))
       },
       "area" -> reverse(P.hasArea),
       "land area" -> reverse(P.hasArea),
