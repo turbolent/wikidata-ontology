@@ -10,22 +10,40 @@ import Tokens._
 object ValuePropertyEdgeFactory {
 
   val factories: Map[(String, String), ContextfulEdgeFactory] =
-    Map(("act", "in") -> contextfulReverse(P.hasCastMember),
-      ("direct", "by") -> P.hasDirector,
-      ("star", "in") -> contextfulReverse(P.hasCastMember),
+    Map(
+      ("act", "in") -> contextfulReverse(P.hasCastMember),
+
       ("star", "") -> P.hasCastMember,
+      ("star", "in") -> contextfulReverse(P.hasCastMember),
+
       ("direct", "") -> contextfulReverse(P.hasDirector),
+      ("direct", "by") -> P.hasDirector,
+
       ("write", "") -> contextfulReverse(P.hasAuthor),
+      ("be write", "by") -> P.hasAuthor,
+
+      // TODO: or P.hasDateOfDeath
       ("die", "in") -> P.hasPlaceOfDeath,
-      ("be bear", "in") -> P.hasPlaceOfBirth,
+      ("die", "on") -> P.hasDateOfDeath,
+      ("die", "before") -> P.hasDateOfDeath,
+      ("die", "after") -> P.hasDateOfDeath,
+
+      // TODO: or P.hasDateOfBirth
       ("bear", "in") -> P.hasPlaceOfBirth,
+      ("bear", "on") -> P.hasDateOfBirth,
+      ("bear", "before") -> P.hasDateOfBirth,
+      ("bear", "after") -> P.hasDateOfBirth,
+
+      // TODO: or P.hasDateOfBirth
+      ("be bear", "in") -> P.hasPlaceOfBirth,
+      ("be bear", "on") -> P.hasDateOfBirth,
       ("be bear", "before") -> P.hasDateOfBirth,
+      ("be bear", "after") -> P.hasDateOfBirth,
+
       ("marry", "") -> P.hasSpouse,
-      // TODO: or date
       ("be film", "in") -> P.hasFilmingLocation,
       ("be speak", "in") -> contextfulReverse(P.hasOfficialLanguage),
       ("be author", "by") -> P.hasAuthor,
-      ("be write", "by") -> P.hasAuthor,
       ("locate", "in") -> P.isLocatedIn,
       ("discover", "") -> contextfulReverse(P.hasDiscovererOrInventor),
       ("invent", "") -> contextfulReverse(P.hasDiscovererOrInventor)
