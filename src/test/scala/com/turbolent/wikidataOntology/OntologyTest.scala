@@ -3030,7 +3030,60 @@ class OntologyTest extends TestCase {
 
       assertEquivalent(expectedQuery, actualQuery)
     }
+    {
+      val actualNodes = compileListQuestion("Who/WP died/VBD in/IN Paris/NNP")
+
+      val env = new WikidataEnvironment()
+
+      val person = env.newNode()
+          .out(P.isA, Q.human)
+
+      val paris = env.newNode()
+          .out(NameLabel, "Paris")
+
+      val expectedNodes = List(person
+          .out(P.hasPlaceOfDeath, paris))
+
+      assertEquals(expectedNodes, actualNodes)
+
+       val actualQuery = compileSparqlQuery(expectedNodes.head)
+
+      val expectedQuery = parseSparqlQuery("1", """
+          |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q5
+          |  { ?1 wdt:P20/(wdt:P131)* ?2
+          |    { ?2  rdfs:label  "Paris"@en }
+          |  }
+          |}
+        """.stripMargin)
+
+      assertEquivalent(expectedQuery, actualQuery)
+    }
+    {
+      val actualNodes = compileListQuestion("Who/WP died/VBD in/IN 1900/CD")
+      val env = new WikidataEnvironment()
+
+      val person = env.newNode()
+          .out(P.isA, Q.human)
+
+      val year: WikidataNode = Year.of(1900)
+
+      val expectedNodes = List(person
+          .out(P.hasDateOfDeath, year))
+
+      assertEquals(expectedNodes, actualNodes)
+
+       val actualQuery = compileSparqlQuery(expectedNodes.head)
+
+      val expectedQuery = parseSparqlQuery("1", """
+          |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q5
+          |  { ?1  wdt:P570  1900 }
+          |}
+        """.stripMargin)
+
+      assertEquivalent(expectedQuery, actualQuery)
+    }
   }
+
 
   def testSparql() {
     {

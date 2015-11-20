@@ -9,6 +9,17 @@ import Tokens._
 
 object ValuePropertyEdgeFactory {
 
+  def makeTemporalValueFactory(temporalProperty: Property,
+                               alternativeProperty: Property): ContextfulEdgeFactory =
+    (node, context, env) => {
+      val value = mkWordString(context.value)
+      TimeParser.parseTemporal(value) map { _ =>
+        out(temporalProperty, node)
+      } getOrElse {
+        out(alternativeProperty, node)
+      }
+    }
+
   val factories: Map[(String, String), ContextfulEdgeFactory] =
     Map(
       ("act", "in") -> contextfulReverse(P.hasCastMember),
@@ -22,20 +33,17 @@ object ValuePropertyEdgeFactory {
       ("write", "") -> contextfulReverse(P.hasAuthor),
       ("be write", "by") -> P.hasAuthor,
 
-      // TODO: or P.hasDateOfDeath
-      ("die", "in") -> P.hasPlaceOfDeath,
+      ("die", "in") -> makeTemporalValueFactory(P.hasDateOfDeath, P.hasPlaceOfDeath),
       ("die", "on") -> P.hasDateOfDeath,
       ("die", "before") -> P.hasDateOfDeath,
       ("die", "after") -> P.hasDateOfDeath,
 
-      // TODO: or P.hasDateOfBirth
-      ("bear", "in") -> P.hasPlaceOfBirth,
+      ("bear", "in") -> makeTemporalValueFactory(P.hasDateOfBirth, P.hasPlaceOfBirth),
       ("bear", "on") -> P.hasDateOfBirth,
       ("bear", "before") -> P.hasDateOfBirth,
       ("bear", "after") -> P.hasDateOfBirth,
 
-      // TODO: or P.hasDateOfBirth
-      ("be bear", "in") -> P.hasPlaceOfBirth,
+      ("be bear", "in") -> makeTemporalValueFactory(P.hasDateOfBirth, P.hasPlaceOfBirth),
       ("be bear", "on") -> P.hasDateOfBirth,
       ("be bear", "before") -> P.hasDateOfBirth,
       ("be bear", "after") -> P.hasDateOfBirth,

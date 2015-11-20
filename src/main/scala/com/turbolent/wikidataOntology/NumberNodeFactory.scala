@@ -1,8 +1,5 @@
 package com.turbolent.wikidataOntology
 
-import java.time.Year
-import java.time.temporal.Temporal
-
 import com.turbolent.numberParser.NumberParser
 import com.turbolent.questionCompiler.graph.{LessThanFilter, GreaterThanFilter, Node}
 import com.turbolent.questionParser.Token
@@ -14,29 +11,32 @@ object NumberNodeFactory {
   type NumberNodeFactory = (Seq[Token], Option[Unit], WikidataEnvironment) => WikidataNode
 
   val factories: Map[String, NumberNodeFactory] =
-    Map("before" -> {
-      (name, unit, env) => {
-        val value = makeTemporalNode(name, unit)
-        env.newNode().filter(LessThanFilter(value))
-      }
-    },
+    Map(
+      "in" -> { (name, unit, env) =>
+        makeTemporalNode(name, unit)
+      },
+      "on" -> { (name, unit, env) =>
+        makeTemporalNode(name, unit)
+      },
+      "before" -> {
+        (name, unit, env) =>
+          val value = makeTemporalNode(name, unit)
+          env.newNode().filter(LessThanFilter(value))
+      },
       "after" -> {
-        (name, unit, env) => {
+        (name, unit, env) =>
           val value = makeTemporalNode(name, unit)
           env.newNode().filter(GreaterThanFilter(value))
-        }
       },
       "less than" -> {
-        (name, unit, env) => {
+        (name, unit, env) =>
           val value = makeNumberUnitNode(name, unit)
           env.newNode().filter(LessThanFilter(value))
-        }
       },
       "more than" -> {
-        (name, unit, env) => {
+        (name, unit, env) =>
           val value = makeNumberUnitNode(name, unit)
           env.newNode().filter(GreaterThanFilter(value))
-        }
       })
 
   val units: Map[String, Unit] =
@@ -53,18 +53,9 @@ object NumberNodeFactory {
     })
   }
 
-  val yearPattern = """[12]\d{3}""".r
-
-  // TODO: extend
-  def parseTemporal(name: String): Option[Temporal] =
-    name match {
-      case yearPattern(_*) => Some(Year.parse(name))
-      case _ => None
-    }
-
   def makeTemporalNode(name: Seq[Token], optionalUnit: Option[Unit]): WikidataNode = {
     val words = mkWordString(name)
-    parseTemporal(words) map { temporal =>
+    TimeParser.parseTemporal(words) map { temporal =>
       temporalAsNode(temporal)
     } getOrElse {
       makeNumberUnitNode(name, optionalUnit)
