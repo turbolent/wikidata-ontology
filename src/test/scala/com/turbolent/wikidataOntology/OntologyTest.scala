@@ -2880,6 +2880,50 @@ class OntologyTest extends TestCase {
 
       // TODO: implement YearLabel as binding of year of root variable
     }
+    {
+      val actualNodes = compileListQuestion("What/WP are/VBP some/DT of/IN Seth/NNP Gabel/NNP 's/POS father-in-law/NN 's/POS movies/NNS")
+
+      // ListQuestion(RelationshipQuery(NamedQuery(List(Token("movies", "NNS"))),
+      //   RelationshipQuery(NamedQuery(List(Token("father-in-law", "NN"))),
+      //     NamedQuery(List(Token("Seth", "NNP"), Token("Gabel", "NNP"))),
+      //     Token("'s", "POS")),
+      //   Token("'s", "POS")))
+
+      val env = new WikidataEnvironment()
+
+      val sethGabel = env.newNode()
+          .out(NameLabel, "Seth Gabel")
+
+      val child = env.newNode()
+          .out(P.hasSpouse, sethGabel)
+
+      val fatherInLaw = env.newNode()
+          .out(P.hasGender, Q.male)
+          .out(P.hasChild, child)
+
+      val movie = env.newNode()
+          .out(P.isA, Q.movie)
+
+      val expectedNodes = List(movie
+          .out(P.hasDirector, fatherInLaw))
+
+      assertEquals(expectedNodes, actualNodes)
+
+      val actualQuery = compileSparqlQuery(expectedNodes.head)
+
+      val expectedQuery = parseSparqlQuery("4", """
+          |{ ?4 p:P31/(v:P31/(wdt:P279)*) wd:Q11424
+          |  { ?4  wdt:P57     ?3 .
+          |    ?3  wdt:P21     wd:Q6581097 ;
+          |        wdt:P40     ?2 .
+          |    ?2  wdt:P26     ?1 .
+          |    ?1  rdfs:label  "Seth Gabel"@en
+          |  }
+          |}
+        """.stripMargin)
+
+      assertEquivalent(expectedQuery, actualQuery)
+    }
   }
 
   def testSparql() {

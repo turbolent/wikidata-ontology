@@ -66,6 +66,26 @@ object RelationshipEdgeFactory {
           in(parent, P.hasChild)
         }
       },
+      "father-in-law" -> {
+        (node, env) => {
+          val child = env.newNode()
+              .out(P.hasSpouse, node)
+          out(P.hasGender, Q.male)
+              .and(out(P.hasChild, child))
+        }
+      },
+      "mother-in-law" -> {
+        (node, env) => {
+          val child = env.newNode()
+              .out(P.hasSpouse, node)
+          out(P.hasGender, Q.female)
+              .and(out(P.hasChild, child))
+        }
+      },
+      "movie" -> { (node, env) =>
+        out(P.isA, Q.movie)
+            .and(out(P.hasDirector, node))
+      },
       "area" -> reverse(P.hasArea),
       "land area" -> reverse(P.hasArea),
       "capital" -> reverse(P.hasCapital),
