@@ -631,8 +631,8 @@ class OntologyTest extends TestCase {
           .out(NameLabel, "Berlin")
 
       val expectedNodes = List(musician
-          .and(out(P.hasPlaceOfBirth, place))
-          .and(out(P.hasPlaceOfDeath, place2)))
+          .out(P.hasPlaceOfBirth, place)
+          .out(P.hasPlaceOfDeath, place2))
 
       assertEquals(expectedNodes, actualNodes)
 
@@ -767,7 +767,7 @@ class OntologyTest extends TestCase {
 
       val actor = env.newNode()
           .out(P.hasOccupation, Q.actor)
-          .and(in(movie, P.hasCastMember))
+          .in(movie, P.hasCastMember)
 
       val expectedNodes = List(actor)
 
@@ -1673,8 +1673,8 @@ class OntologyTest extends TestCase {
           .out(NameLabel, "Vol de Nuit")
 
       val expectedNodes = List(person
-          .and(in(book, P.hasAuthor))
-          .and(in(book2, P.hasAuthor)))
+          .in(book, P.hasAuthor)
+          .in(book2, P.hasAuthor))
 
       assertEquals(expectedNodes, actualNodes)
 
