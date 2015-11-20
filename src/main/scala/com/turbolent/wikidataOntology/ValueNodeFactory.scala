@@ -8,11 +8,14 @@ import Tokens._
 
 object ValueNodeFactory {
 
+  def instanceOrOccupation(item: Item): NodeFactory =
+    (node, env) =>
+      node.out(P.isA, item)
+          .or(out(P.hasOccupation, item))
+
+
   val factories: Map[String, NodeFactory] =
     Map("movie" -> Q.movie,
-      "actor" -> { (node, env) =>
-        node.out(P.hasOccupation, Q.actor)
-      },
       "mountain" -> Q.mountain,
       "president" -> { (node, env) =>
         node.in(env.newNode(), P.hasHeadOfState)
@@ -20,7 +23,6 @@ object ValueNodeFactory {
       "author" -> { (node, env) =>
         node.in(env.newNode(), P.hasAuthor)
       },
-      "musician" -> Q.musician,
       "book" -> Q.book,
       "language" -> Q.language,
       "instrument" -> Q.musicalInstrument,
@@ -33,7 +35,16 @@ object ValueNodeFactory {
       "people" -> Q.human,
       "person" -> Q.human,
       "country" -> Q.country,
-      "year" -> Q.year)
+      "year" -> Q.year,
+      "woman" -> { (node, env) =>
+        node.out(P.hasGender, Q.female)
+      },
+      "man" -> { (node, env) =>
+        node.out(P.hasGender, Q.male)
+      },
+      "actor" -> instanceOrOccupation(Q.actor),
+      "musician" -> instanceOrOccupation(Q.musician)
+    )
 
   val adjectiveFactories: Map[String, NodeFactory] =
     Map("most" -> {
