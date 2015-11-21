@@ -492,12 +492,11 @@ class OntologyTest extends TestCase {
 
       val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
-      // TODO: extract year from ?2
       val expectedQuery = parseSparqlQuery("1",
         """
           |{ ?2  wdt:P35  ?1
           |  { ?1  wdt:P569  ?3
-          |    FILTER ( ?3 < 1900 )
+          |    FILTER ( year(?3) < 1900 )
           |  }
           |}
         """.stripMargin)
@@ -3064,6 +3063,35 @@ class OntologyTest extends TestCase {
       assertEquivalent(expectedQuery, actualQuery)
     }
     {
+      val actualNodes = compileListQuestion("Who/WP died/VBD before/IN 1900/CD")
+      val env = new WikidataEnvironment()
+
+      val person = env.newNode()
+          .out(P.isA, Q.human)
+
+      val year: WikidataNode = Year.of(1900)
+
+      val date = env.newNode()
+          .filter(LessThanFilter(year))
+
+      val expectedNodes = List(person
+          .out(P.hasDateOfDeath, date))
+
+      assertEquals(expectedNodes, actualNodes)
+
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
+
+      val expectedQuery = parseSparqlQuery("1", """
+          |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q5
+          |  { ?1  wdt:P570  ?2
+          |    FILTER ( year(?2) < 1900 )
+          |  }
+          |}
+        """.stripMargin)
+
+      assertEquivalent(expectedQuery, actualQuery)
+    }
+    {
       val actualNodes = compileListQuestion("Who/WP died/VBD in/IN 1900/CD")
       val env = new WikidataEnvironment()
 
@@ -3077,11 +3105,13 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-       val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1", """
           |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q5
-          |  { ?1  wdt:P570  1900 }
+          |  { ?1  wdt:P570  ?2
+          |    FILTER ( year(?2) = 1900 )
+          |  }
           |}
         """.stripMargin)
 
@@ -3206,32 +3236,6 @@ class OntologyTest extends TestCase {
       } catch {
         case e: RuntimeException =>
       }
-    }
-    {
-      val env = new WikidataEnvironment()
-
-      val president = env.newNode()
-          .in(env.newNode(), P.hasHeadOfState)
-
-      val year: WikidataNode = Year.of(1900)
-
-      val date = env.newNode()
-          .filter(LessThanFilter(year))
-
-      val root = president.out(P.hasDateOfBirth, date)
-
-      val actualQuery = compileSparqlQuery(root)
-
-      // TODO: extract year of ?2
-      val expectedQuery = parseSparqlQuery("1", """
-          |{ ?2  wdt:P35  ?1
-          |  { ?1  wdt:P569  ?3
-          |    FILTER ( ?3 < 1900 )
-          |  }
-          |}
-        """.stripMargin)
-
-      assertEquivalent(expectedQuery, actualQuery)
     }
     {
       val env = new WikidataEnvironment()

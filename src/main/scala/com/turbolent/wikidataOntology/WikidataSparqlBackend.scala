@@ -2,8 +2,9 @@ package com.turbolent.wikidataOntology
 
 import java.time.Year
 
-import com.turbolent.questionCompiler.sparql.SparqlBackend
+import com.turbolent.questionCompiler.graph.EqualsFilter
 import com.turbolent.questionCompiler.graph.Node
+import com.turbolent.questionCompiler.sparql.{NodeCompilationContext, SparqlBackend, TripleNodeCompilationContext}
 import org.apache.jena.datatypes.RDFDatatype
 import org.apache.jena.datatypes.xsd.XSDDatatype
 import org.apache.jena.graph.{NodeFactory => JenaNodeFactory, Node => JenaNode, Triple => JenaTriple}
@@ -12,6 +13,7 @@ import org.apache.jena.sparql.algebra.Op
 import org.apache.jena.sparql.algebra.op.{OpBGP, OpJoin, OpService}
 import org.apache.jena.sparql.core.{Var, BasicPattern}
 import org.apache.jena.sparql.path._
+import org.apache.jena.sparql.expr.{E_DateTimeYear, Expr}
 
 
 class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, WikidataEnvironment] {
@@ -145,4 +147,25 @@ class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, Wikidata
     val serviceOp = new OpService(labelNode, subOp, false)
     OpJoin.create(op, serviceOp)
   }
+
+  override def expandNode(node: NodeT, context: NodeCompilationContext,
+                          env: WikidataEnvironment): NodeT =
+  {
+    (context, node.label) match {
+      case (TripleNodeCompilationContext, label: TemporalLabel) =>
+        // temporal only allowed in filter, introduce intermediate node
+        env.newNode().filter(EqualsFilter(node))
+      case _ =>
+        node
+    }
+  }
+
+  override def prepareLeftFunctionExpression(leftExpr: Expr, otherNode: NodeT) =
+    otherNode match {
+      case Node(TemporalLabel(year: Year), _, _, _) =>
+        new E_DateTimeYear(leftExpr)
+
+      case _ =>
+        leftExpr
+    }
 }
