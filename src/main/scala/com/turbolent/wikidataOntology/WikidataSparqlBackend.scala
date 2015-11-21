@@ -1,9 +1,9 @@
 package com.turbolent.wikidataOntology
 
 import java.time.Year
-import java.util.concurrent.atomic.AtomicInteger
 
 import com.turbolent.questionCompiler.sparql.SparqlBackend
+import com.turbolent.questionCompiler.graph.Node
 import org.apache.jena.datatypes.RDFDatatype
 import org.apache.jena.datatypes.xsd.XSDDatatype
 import org.apache.jena.graph.{NodeFactory => JenaNodeFactory, Node => JenaNode, Triple => JenaTriple}
@@ -14,7 +14,7 @@ import org.apache.jena.sparql.core.{Var, BasicPattern}
 import org.apache.jena.sparql.path._
 
 
-object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
+class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, WikidataEnvironment] {
 
   val ENTITY_BASE = "http://www.wikidata.org/entity/"
   val PROPERTY_BASE = "http://www.wikidata.org/prop/direct/"
@@ -25,7 +25,7 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
   val STATEMENT_BASE = "http://www.wikidata.org/prop/"
   val VALUE_BASE = "http://www.wikidata.org/prop/statement/"
 
-  override def prepareQuery(query: Query) {
+  override def prepareQuery(query: Query, env: WikidataEnvironment) {
     query.setPrefix("wd", ENTITY_BASE)
     query.setPrefix("wdt", PROPERTY_BASE)
     query.setPrefix("rdfs", RDFS_BASE)
@@ -40,7 +40,7 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
   // TODO:
     XSDDatatype.XSDinteger
 
-  override def compileNodeLabel(label: NodeLabel): JenaNode =
+  override def compileNodeLabel(label: NodeLabel, env: WikidataEnvironment): JenaNode =
     label match {
       case VarLabel(id) =>
         Var.alloc(id.toString)
@@ -108,7 +108,8 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
       Left(node)
     }
 
-  override def compileEdgeLabel(label: EdgeLabel): Either[JenaNode, Path] =
+  override def compileEdgeLabel(label: EdgeLabel,
+                                env: WikidataEnvironment): Either[JenaNode, Path] = {
     label match {
       case PropertyLabel(property) =>
         compileProperty(property)
@@ -117,13 +118,9 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
         Left(JenaNodeFactory.createURI(RDFS_BASE + "label"))
 
     }
+  }
 
-  val nextVariableID = new AtomicInteger(0)
-
-  override def makeAnonymousVariable(): JenaNode =
-    Var.alloc("_a" + nextVariableID.getAndIncrement())
-
-  override def additionalResultVariables(variable: Var) = {
+  override def additionalResultVariables(variable: Var, env: WikidataEnvironment) = {
     // add additional label variable, resolved by labeling service.
     // see prepareOp
     val name = variable.getVarName
@@ -131,7 +128,7 @@ object WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel] {
     List(labelVariable)
   }
 
-  override def prepareOp(op: Op) = {
+  override def prepareOp(op: Op, env: WikidataEnvironment) = {
     // enable labeling service by adding
     // `SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }`.
     // see also additionalResultVariables

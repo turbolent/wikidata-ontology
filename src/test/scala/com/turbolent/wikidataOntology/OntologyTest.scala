@@ -82,8 +82,8 @@ class OntologyTest extends TestCase {
                         + String.format(SELECT_FORMAT, variable, variable)
                         + String.format(WHERE_FORMAT, query))
 
-  def compileSparqlQuery(node: WikidataNode) =
-    new SparqlGraphCompiler[NodeLabel, EdgeLabel](WikidataSparqlBackend)
+  def compileSparqlQuery(node: WikidataNode, env: WikidataEnvironment) =
+    new SparqlGraphCompiler(new WikidataSparqlBackend, env)
         .compileQuery(node)
 
   def testQuestions() {
@@ -105,7 +105,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -137,7 +137,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -168,7 +168,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -200,7 +200,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -235,7 +235,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -267,7 +267,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -299,7 +299,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -332,7 +332,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -363,7 +363,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -406,7 +406,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -451,7 +451,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -490,7 +490,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       // TODO: extract year from ?2
       val expectedQuery = parseSparqlQuery("1",
@@ -531,7 +531,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -584,7 +584,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -636,7 +636,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -676,7 +676,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -708,7 +708,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -739,7 +739,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -773,7 +773,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -807,7 +807,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -841,7 +841,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -871,7 +871,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -904,7 +904,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -936,7 +936,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -968,7 +968,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("3",
         """
@@ -1008,7 +1008,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("3",
         """
@@ -1050,7 +1050,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("3",
         """
@@ -1082,7 +1082,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -1198,7 +1198,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -1255,7 +1255,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("6",
         """
@@ -1311,7 +1311,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("4",
         """
@@ -1355,7 +1355,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("3",
         """
@@ -1397,7 +1397,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("3",
         """
@@ -1430,7 +1430,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1463,7 +1463,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1491,7 +1491,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1525,7 +1525,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1565,7 +1565,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1604,7 +1604,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1638,7 +1638,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1678,7 +1678,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1713,7 +1713,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1744,7 +1744,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1777,7 +1777,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1809,7 +1809,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1843,7 +1843,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1883,7 +1883,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1923,7 +1923,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -1966,7 +1966,7 @@ class OntologyTest extends TestCase {
       assertEquals(expectedNodes, actualNodes)
 
       {
-        val actualQuery = compileSparqlQuery(expectedNodes.head)
+        val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
         val expectedQuery = parseSparqlQuery("2",
           """
@@ -1978,7 +1978,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(1))
+        val actualQuery = compileSparqlQuery(expectedNodes(1), env)
 
         val expectedQuery = parseSparqlQuery("4",
           """
@@ -2018,7 +2018,7 @@ class OntologyTest extends TestCase {
       assertEquals(expectedNodes, actualNodes)
 
       {
-        val actualQuery = compileSparqlQuery(expectedNodes.head)
+        val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
         val expectedQuery = parseSparqlQuery("3",
           """
@@ -2030,7 +2030,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(1))
+        val actualQuery = compileSparqlQuery(expectedNodes(1), env)
 
         val expectedQuery = parseSparqlQuery("4",
           """
@@ -2068,7 +2068,7 @@ class OntologyTest extends TestCase {
       assertEquals(expectedNodes, actualNodes)
 
       {
-        val actualQuery = compileSparqlQuery(expectedNodes.head)
+        val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
         val expectedQuery = parseSparqlQuery("3",
           """
@@ -2080,7 +2080,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(1))
+        val actualQuery = compileSparqlQuery(expectedNodes(1), env)
 
         val expectedQuery = parseSparqlQuery("4",
           """
@@ -2129,7 +2129,7 @@ class OntologyTest extends TestCase {
       assertEquals(expectedNodes, actualNodes)
 
       {
-        val actualQuery = compileSparqlQuery(expectedNodes.head)
+        val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
         val expectedQuery = parseSparqlQuery("3",
           """
@@ -2141,7 +2141,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(1))
+        val actualQuery = compileSparqlQuery(expectedNodes(1), env)
 
         val expectedQuery = parseSparqlQuery("4",
           """
@@ -2153,7 +2153,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(2))
+        val actualQuery = compileSparqlQuery(expectedNodes(2), env)
 
         val expectedQuery = parseSparqlQuery("5",
           """
@@ -2165,7 +2165,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(3))
+        val actualQuery = compileSparqlQuery(expectedNodes(3), env)
 
         val expectedQuery = parseSparqlQuery("6",
           """
@@ -2239,7 +2239,7 @@ class OntologyTest extends TestCase {
       assertEquals(expectedNodes, actualNodes)
 
       {
-        val actualQuery = compileSparqlQuery(expectedNodes.head)
+        val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
         val expectedQuery = parseSparqlQuery("4",
           """
@@ -2251,7 +2251,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(1))
+        val actualQuery = compileSparqlQuery(expectedNodes(1), env)
 
         val expectedQuery = parseSparqlQuery("5",
           """
@@ -2263,7 +2263,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(2))
+        val actualQuery = compileSparqlQuery(expectedNodes(2), env)
 
         val expectedQuery = parseSparqlQuery("6",
           """
@@ -2275,7 +2275,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(3))
+        val actualQuery = compileSparqlQuery(expectedNodes(3), env)
 
         val expectedQuery = parseSparqlQuery("7",
           """
@@ -2287,7 +2287,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(4))
+        val actualQuery = compileSparqlQuery(expectedNodes(4), env)
 
         val expectedQuery = parseSparqlQuery("8",
           """
@@ -2299,7 +2299,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(5))
+        val actualQuery = compileSparqlQuery(expectedNodes(5), env)
 
         val expectedQuery = parseSparqlQuery("9",
           """
@@ -2311,7 +2311,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(6))
+        val actualQuery = compileSparqlQuery(expectedNodes(6), env)
 
         val expectedQuery = parseSparqlQuery("10",
           """
@@ -2323,7 +2323,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(7))
+        val actualQuery = compileSparqlQuery(expectedNodes(7), env)
 
         val expectedQuery = parseSparqlQuery("11",
           """
@@ -2335,7 +2335,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(8))
+        val actualQuery = compileSparqlQuery(expectedNodes(8), env)
 
         val expectedQuery = parseSparqlQuery("12",
           """
@@ -2383,7 +2383,7 @@ class OntologyTest extends TestCase {
       assertEquals(expectedNodes, actualNodes)
 
       {
-        val actualQuery = compileSparqlQuery(expectedNodes.head)
+        val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
         val expectedQuery = parseSparqlQuery("3",
           """
@@ -2395,7 +2395,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(1))
+        val actualQuery = compileSparqlQuery(expectedNodes(1), env)
 
         val expectedQuery = parseSparqlQuery("4",
           """
@@ -2407,7 +2407,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(2))
+        val actualQuery = compileSparqlQuery(expectedNodes(2), env)
 
         val expectedQuery = parseSparqlQuery("5",
           """
@@ -2419,7 +2419,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(3))
+        val actualQuery = compileSparqlQuery(expectedNodes(3), env)
 
         val expectedQuery = parseSparqlQuery("6",
           """
@@ -2459,7 +2459,7 @@ class OntologyTest extends TestCase {
       assertEquals(expectedNodes, actualNodes)
 
       {
-        val actualQuery = compileSparqlQuery(expectedNodes.head)
+        val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
         val expectedQuery = parseSparqlQuery("2",
           """
@@ -2471,7 +2471,7 @@ class OntologyTest extends TestCase {
         assertEquivalent(expectedQuery, actualQuery)
       }
       {
-        val actualQuery = compileSparqlQuery(expectedNodes(1))
+        val actualQuery = compileSparqlQuery(expectedNodes(1), env)
 
         val expectedQuery = parseSparqlQuery("4",
           """
@@ -2502,7 +2502,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -2534,7 +2534,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -2595,7 +2595,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -2635,7 +2635,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -2675,7 +2675,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -2714,7 +2714,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -2751,7 +2751,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -2792,7 +2792,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("1",
         """
@@ -2820,7 +2820,7 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
       val expectedQuery = parseSparqlQuery("2",
         """
@@ -2878,9 +2878,10 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
-      val expectedQuery = parseSparqlQuery("3", """
+      val expectedQuery = parseSparqlQuery("3",
+        """
           |{ ?2  wdt:P40     ?3 .
           |  ?1  wdt:P26     ?2 ;
           |      rdfs:label  "Clinton"@en
@@ -2910,9 +2911,10 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
-      val expectedQuery = parseSparqlQuery("1", """
+      val expectedQuery = parseSparqlQuery("1",
+        """
           |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q571
           |  { ?1  wdt:P50     ?2 .
           |    ?2  rdfs:label  "Jane Austen"@en
@@ -2946,9 +2948,10 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
-      val expectedQuery = parseSparqlQuery("1", """
+      val expectedQuery = parseSparqlQuery("1",
+        """
           |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q6256
           |  { ?3  wdt:P17  ?1
           |    { ?2 wdt:P19/(wdt:P131)* ?3
@@ -3015,9 +3018,10 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-      val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
-      val expectedQuery = parseSparqlQuery("4", """
+      val expectedQuery = parseSparqlQuery("4",
+        """
           |{ ?4 p:P31/(v:P31/(wdt:P279)*) wd:Q11424
           |  { ?4  wdt:P57     ?3 .
           |    ?3  wdt:P21     wd:Q6581097 ;
@@ -3046,9 +3050,10 @@ class OntologyTest extends TestCase {
 
       assertEquals(expectedNodes, actualNodes)
 
-       val actualQuery = compileSparqlQuery(expectedNodes.head)
+      val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
-      val expectedQuery = parseSparqlQuery("1", """
+      val expectedQuery = parseSparqlQuery("1",
+        """
           |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q5
           |  { ?1 wdt:P20/(wdt:P131)* ?2
           |    { ?2  rdfs:label  "Paris"@en }
@@ -3100,7 +3105,7 @@ class OntologyTest extends TestCase {
           .and(in(pluto, P.hasDiscovererOrInventor)
                or in(nix, P.hasDiscovererOrInventor))
 
-      val actualQuery = compileSparqlQuery(root)
+      val actualQuery = compileSparqlQuery(root, env)
 
       val expectedQuery = parseSparqlQuery("3", """
           |{ ?3 p:P31/(v:P31/(wdt:P279)*) wd:Q5
@@ -3127,7 +3132,7 @@ class OntologyTest extends TestCase {
 
       val root = person.in(movie, P.hasCastMember)
 
-      val actualQuery = compileSparqlQuery(root)
+      val actualQuery = compileSparqlQuery(root, env)
 
       val expectedQuery = parseSparqlQuery("1", """
           |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q5
@@ -3148,7 +3153,7 @@ class OntologyTest extends TestCase {
           .out(P.isA, Q.mountain)
           .out(P.hasElevation, elevation)
 
-      val actualQuery = compileSparqlQuery(root)
+      val actualQuery = compileSparqlQuery(root, env)
 
       val expectedQuery = parseSparqlQuery("1", """
           |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q8502
@@ -3175,7 +3180,7 @@ class OntologyTest extends TestCase {
       val root = env.newNode()
           .out(P.hasArea, area)
 
-      val actualQuery = compileSparqlQuery(root)
+      val actualQuery = compileSparqlQuery(root, env)
 
       val expectedQuery = parseSparqlQuery("4", """
           |{ ?4  wdt:P2046  ?3 .
@@ -3196,7 +3201,7 @@ class OntologyTest extends TestCase {
           .filter(LessThanFilter(number))
 
       try {
-        val actualQuery = compileSparqlQuery(root)
+        val actualQuery = compileSparqlQuery(root, env)
         fail("should not compile")
       } catch {
         case e: RuntimeException =>
@@ -3245,7 +3250,7 @@ class OntologyTest extends TestCase {
 
       val root = city.out(P.hasArea, area)
 
-      val actualQuery = compileSparqlQuery(root)
+      val actualQuery = compileSparqlQuery(root, env)
 
       val expectedQuery = parseSparqlQuery("1", """
           |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q515
@@ -3274,7 +3279,7 @@ class OntologyTest extends TestCase {
       val root = env.newNode()
           .out(P.hasArea, area)
 
-      val actualQuery = compileSparqlQuery(root)
+      val actualQuery = compileSparqlQuery(root, env)
 
       val expectedQuery = parseSparqlQuery("2", """
           |{ ?2  wdt:P2046  ?1 .
