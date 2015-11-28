@@ -30,8 +30,10 @@ object ValuePropertyEdgeFactory {
 
       ("direct", "") -> contextfulReverse(P.hasDirector),
       ("direct", "by") -> P.hasDirector,
+      ("be direct", "by") -> P.hasDirector,
 
       ("write", "") -> contextfulReverse(P.hasAuthor),
+      ("write", "by") -> P.hasAuthor,
       ("be write", "by") -> P.hasAuthor,
 
       ("die", "in") -> makeTemporalValueFactory(P.hasDateOfDeath, P.hasPlaceOfDeath),
@@ -50,12 +52,21 @@ object ValuePropertyEdgeFactory {
       ("be bear", "after") -> P.hasDateOfBirth,
 
       ("marry", "") -> P.hasSpouse,
+
+      ("film", "in") -> P.hasFilmingLocation,
       ("be film", "in") -> P.hasFilmingLocation,
+
+      ("speak", "in") -> contextfulReverse(P.hasOfficialLanguage),
       ("be speak", "in") -> contextfulReverse(P.hasOfficialLanguage),
       ("be author", "by") -> P.hasAuthor,
       ("locate", "in") -> P.isLocatedIn,
+
       ("discover", "") -> contextfulReverse(P.hasDiscovererOrInventor),
-      ("invent", "") -> contextfulReverse(P.hasDiscovererOrInventor)
+      ("discover", "by") -> P.hasDiscovererOrInventor,
+
+      ("invent", "") -> contextfulReverse(P.hasDiscovererOrInventor),
+      ("invent", "by") -> P.hasDiscovererOrInventor
+
     )
 
 }

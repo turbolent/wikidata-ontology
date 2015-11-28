@@ -12,6 +12,7 @@ object NamedPropertyEdgeFactory {
       "direct" -> reverse(P.hasDirector),
       "write" -> reverse(P.hasAuthor),
       "marry" -> P.hasSpouse,
+      "be marry" -> P.hasSpouse,
       "die" -> { (node, env) =>
         out(P.hasDateOfDeath, node) or
         out(P.hasPlaceOfDeath, node)
