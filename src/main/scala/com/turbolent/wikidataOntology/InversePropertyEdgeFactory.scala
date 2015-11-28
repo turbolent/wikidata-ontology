@@ -3,12 +3,14 @@ package com.turbolent.wikidataOntology
 import com.turbolent.questionCompiler.{NamedSubject, EdgeContext}
 import com.turbolent.questionParser.{ListParser, Token}
 import Tokens._
+import scala.collection.mutable
 
 
 object InversePropertyEdgeFactory {
 
-  val factories: Map[String, ContextfulEdgeFactory] =
-    Map("appear" -> P.hasCastMember,
+  val factories: mutable.Map[String, ContextfulEdgeFactory] =
+    mutable.Map(
+      "appear" -> P.hasCastMember,
       "marry" -> P.hasSpouse,
       "write" -> P.hasAuthor,
       "direct" -> P.hasDirector,

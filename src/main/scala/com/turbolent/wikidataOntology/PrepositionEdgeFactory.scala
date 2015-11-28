@@ -3,17 +3,22 @@ package com.turbolent.wikidataOntology
 import com.turbolent.questionCompiler.{PersonSubject, NamedSubject, ThingSubject, EdgeContext}
 import com.turbolent.questionParser.Token
 import Tokens._
-
+import scala.collection.mutable
 
 object PrepositionEdgeFactory {
 
-  val namedFactories: Map[(String, String), ContextfulEdgeFactory] =
-    Map(("city", "in") -> P.isLocatedIn,
-      ("book", "by") -> P.hasAuthor)
+  val namedFactories: mutable.Map[(String, String), ContextfulEdgeFactory] =
+    mutable.Map(
+      ("city", "in") -> P.isLocatedIn,
+      ("book", "by") -> P.hasAuthor,
+      ("movie", "by") -> P.hasDirector
+    )
 
-  val personFactories: Map[String, ContextfulEdgeFactory] = Map()
+  val personFactories: mutable.Map[String, ContextfulEdgeFactory] =
+    mutable.Map()
 
-  val thingFactories: Map[String, ContextfulEdgeFactory] = Map()
+  val thingFactories: mutable.Map[String, ContextfulEdgeFactory] =
+    mutable.Map()
 
   def isPrepositionProperty(name: Seq[Token], filter: Seq[Token]) =
     (name, filter) match {

@@ -4,14 +4,14 @@ import com.turbolent.numberParser.NumberParser
 import com.turbolent.questionCompiler.graph.{LessThanFilter, GreaterThanFilter, Node}
 import com.turbolent.questionParser.Token
 import Tokens._
-
+import scala.collection.mutable
 
 object NumberNodeFactory {
 
   type NumberNodeFactory = (Seq[Token], Option[Unit], WikidataEnvironment) => WikidataNode
 
-  val factories: Map[String, NumberNodeFactory] =
-    Map(
+  val factories: mutable.Map[String, NumberNodeFactory] =
+    mutable.Map(
       "in" -> { (name, unit, env) =>
         makeTemporalNode(name, unit)
       },
@@ -39,8 +39,9 @@ object NumberNodeFactory {
           env.newNode().filter(GreaterThanFilter(value))
       })
 
-  val units: Map[String, Unit] =
-    Map("meter" -> U.meter,
+  val units: mutable.Map[String, Unit] =
+    mutable.Map(
+      "meter" -> U.meter,
       "second" -> U.second)
 
   def makeNumberUnitNode(name: Seq[Token], unit: Option[Unit]): WikidataNode = {

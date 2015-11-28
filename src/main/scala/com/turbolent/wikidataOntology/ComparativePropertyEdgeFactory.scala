@@ -5,7 +5,7 @@ import com.turbolent.questionCompiler.{PersonSubject, NamedSubject, ThingSubject
 import com.turbolent.questionParser.Token
 import HaveEdgeFactory.makeHaveEdge
 import Tokens._
-
+import scala.collection.mutable
 
 object ComparativePropertyEdgeFactory {
 
@@ -21,16 +21,22 @@ object ComparativePropertyEdgeFactory {
       out(property, area)
     }
 
-  val namedFactories: Map[(String, String, String), ContextfulEdgeFactory] =
-    Map(("city", "be", "bigger than") ->
-        makeComparisonFactory(P.hasArea, GreaterThanFilter(_)),
-      ("city", "live", "more than") -> P.hasPopulation)
+  val namedFactories: mutable.Map[(String, String, String), ContextfulEdgeFactory] =
+    mutable.Map(
+      ("city", "be", "bigger than") -> makeComparisonFactory(P.hasArea, GreaterThanFilter(_)),
+      ("city", "be", "smaller than") -> makeComparisonFactory(P.hasArea, LessThanFilter(_)),
+      // NOTE: comparison handled in NumberNodeFactory
+      ("city", "live", "more than") -> P.hasPopulation,
+      ("city", "live", "less than") -> P.hasPopulation)
 
-  val thingFactories: Map[(String, String), ContextfulEdgeFactory] = Map()
 
-  val personFactories: Map[(String, String), ContextfulEdgeFactory] = Map(
-    // TODO: improve: take into account death date
-    ("be", "older than") -> makeComparisonFactory(P.hasDateOfBirth, LessThanFilter(_)))
+  val thingFactories: mutable.Map[(String, String), ContextfulEdgeFactory] =
+    mutable.Map()
+
+  val personFactories: mutable.Map[(String, String), ContextfulEdgeFactory] =
+    mutable.Map(
+      // TODO: improve: take into account death date
+      ("be", "older than") -> makeComparisonFactory(P.hasDateOfBirth, LessThanFilter(_)))
 
 }
 

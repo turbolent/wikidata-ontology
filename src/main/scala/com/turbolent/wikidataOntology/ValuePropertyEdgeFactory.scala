@@ -5,6 +5,7 @@ import com.turbolent.questionParser.Token
 import HaveEdgeFactory.makeHaveEdge
 import PrepositionEdgeFactory.{isPrepositionProperty, makePrepositionEdge}
 import Tokens._
+import scala.collection.mutable
 
 
 object ValuePropertyEdgeFactory {
@@ -20,8 +21,8 @@ object ValuePropertyEdgeFactory {
       }
     }
 
-  val factories: Map[(String, String), ContextfulEdgeFactory] =
-    Map(
+  val factories: mutable.Map[(String, String), ContextfulEdgeFactory] =
+    mutable.Map(
       ("act", "in") -> contextfulReverse(P.hasCastMember),
 
       ("star", "") -> P.hasCastMember,

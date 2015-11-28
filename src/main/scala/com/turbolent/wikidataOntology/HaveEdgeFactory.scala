@@ -2,12 +2,14 @@ package com.turbolent.wikidataOntology
 
 import com.turbolent.questionCompiler.EdgeContext
 import Tokens._
+import scala.collection.mutable
 
 
 object HaveEdgeFactory {
 
-  val factories: Map[String, ContextfulEdgeFactory] =
-    Map("child" -> P.hasChild,
+  val factories: mutable.Map[String, ContextfulEdgeFactory] =
+    mutable.Map(
+      "child" -> P.hasChild,
       "inhabitant" -> P.hasPopulation)
 
   def makeHaveEdge(node: WikidataNode, context: EdgeContext,

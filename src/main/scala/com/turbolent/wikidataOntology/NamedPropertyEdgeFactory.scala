@@ -3,12 +3,13 @@ package com.turbolent.wikidataOntology
 import com.turbolent.questionCompiler.Subject
 import com.turbolent.questionParser.Token
 import Tokens._
-
+import scala.collection.mutable
 
 object NamedPropertyEdgeFactory {
 
-  val factories: Map[String, EdgeFactory] =
-    Map("direct" -> reverse(P.hasDirector),
+  val factories: mutable.Map[String, EdgeFactory] =
+    mutable.Map(
+      "direct" -> reverse(P.hasDirector),
       "write" -> reverse(P.hasAuthor),
       "marry" -> P.hasSpouse,
       "die" -> { (node, env) =>

@@ -3,12 +3,13 @@ package com.turbolent.wikidataOntology
 import com.turbolent.questionCompiler.EdgeContext
 import com.turbolent.questionParser.Token
 import Tokens._
+import scala.collection.mutable
 
 
 object AdjectivePropertyEdgeFactory {
 
-  val factories: Map[String, ContextfulEdgeFactory] =
-    Map("be high" -> P.hasElevation)
+  val factories: mutable.Map[String, ContextfulEdgeFactory] =
+    mutable.Map("be high" -> P.hasElevation)
 
 }
 

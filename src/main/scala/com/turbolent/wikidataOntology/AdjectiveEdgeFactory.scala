@@ -3,6 +3,7 @@ package com.turbolent.wikidataOntology
 import com.turbolent.questionCompiler.graph.Max
 import com.turbolent.questionParser.Token
 import Tokens._
+import scala.collection.mutable
 
 
 object AdjectiveEdgeFactory {
@@ -13,8 +14,9 @@ object AdjectiveEdgeFactory {
     out(P.hasPopulation,
       env.newNode().aggregate(Max))
 
-  val factories: Map[(String, String), PlainEdgeFactory] =
-    Map(("largest", "city") -> maxPopulation,
+  val factories: mutable.Map[(String, String), PlainEdgeFactory] =
+    mutable.Map(
+      ("largest", "city") -> maxPopulation,
       ("biggest", "city") -> maxPopulation)
 
   def makeAdjectiveEdge(adjectives: Seq[Token], lemmatized: String,
@@ -25,5 +27,5 @@ object AdjectiveEdgeFactory {
       val key = (adjectiveWords, lemmatized)
       factories.get(key).map(_(env))
     }
-  
+
 }

@@ -4,6 +4,7 @@ import com.turbolent.questionCompiler.graph.{Max, Count}
 import com.turbolent.questionParser.Token
 import AdjectiveEdgeFactory.makeAdjectiveEdge
 import Tokens._
+import scala.collection.mutable
 
 
 object ValueNodeFactory {
@@ -14,8 +15,9 @@ object ValueNodeFactory {
           .or(out(P.hasOccupation, item))
 
 
-  val factories: Map[String, NodeFactory] =
-    Map("movie" -> Q.movie,
+  val factories: mutable.Map[String, NodeFactory] =
+    mutable.Map(
+      "movie" -> Q.movie,
       "mountain" -> Q.mountain,
       "president" -> { (node, env) =>
         node.in(env.newNode(), P.hasHeadOfState)
@@ -609,8 +611,8 @@ object ValueNodeFactory {
       "advocate" -> instanceOrOccupation(Q.advocate)
     )
 
-  val adjectiveFactories: Map[String, NodeFactory] =
-    Map("most" -> {
+  val adjectiveFactories: mutable.Map[String, NodeFactory] =
+    mutable.Map("most" -> {
       (node, env) =>
         node.aggregate(Count).aggregate(Max)
     })

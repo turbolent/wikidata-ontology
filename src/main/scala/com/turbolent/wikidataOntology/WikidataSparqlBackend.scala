@@ -15,6 +15,8 @@ import org.apache.jena.sparql.core.{Var, BasicPattern}
 import org.apache.jena.sparql.path._
 import org.apache.jena.sparql.expr.{E_DateTimeYear, Expr}
 
+import collection.mutable
+
 
 class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, WikidataEnvironment] {
 
@@ -96,8 +98,9 @@ class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, Wikidata
         new P_ZeroOrMore1(subclassOfPath)))
   }
 
-  val paths: Map[Property, Path] =
-    Map(P.isA -> instanceOfSubclassPath(P.isA),
+  val paths: mutable.Map[Property, Path] =
+    mutable.Map(
+      P.isA -> instanceOfSubclassPath(P.isA),
       P.hasOccupation -> instanceOfSubclassPath(P.hasOccupation),
       P.isLocatedIn -> new P_OneOrMore1(new P_Link(compilePropertyNode(P.isLocatedIn))),
       P.hasPlaceOfBirth -> locatedInPath(P.hasPlaceOfBirth),
