@@ -13,12 +13,12 @@ object ComparativePropertyEdgeFactory {
 
   def makeComparisonFactory(property: Property, filterFactory: FilterFactory): ContextfulEdgeFactory =
     (node, context, env) => {
-      val otherArea = env.newNode()
+      val otherValue = env.newNode()
           .in(node, property)
-      val filter = filterFactory(otherArea)
-      val area = env.newNode()
+      val filter = filterFactory(otherValue)
+      val value = env.newNode()
           .filter(filter)
-      out(property, area)
+      out(property, value)
     }
 
   val namedFactories: mutable.Map[(String, String, String), ContextfulEdgeFactory] =

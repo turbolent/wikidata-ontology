@@ -31,7 +31,7 @@ trait NamedPropertyEdgeFactory {
     factories.get(lemmatized) map {
       _(node, env)
     } getOrElse {
-      throw new RuntimeException(s"No plain property edge factory for '$lemmatized' " +
+      throw new RuntimeException(s"No named property edge factory for '$lemmatized' " +
                                  s"(${name.mkString(", ")})")
     }
   }
