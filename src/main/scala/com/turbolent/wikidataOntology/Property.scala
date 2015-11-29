@@ -26,6 +26,7 @@ package object P {
   val hasOccupation = Property(106, "has occupation")
   val isLocatedIn = Property(131, "is located in")
   val hasGenre = Property(136, "has genre")
+  val wasKilledBy = Property(157, "was killed by")
   val hasCastMember = Property(161, "has cast member")
   val hasPerformer = Property(175, "has performer")
   val isSubclassOf = Property(279, "is subclass of")
