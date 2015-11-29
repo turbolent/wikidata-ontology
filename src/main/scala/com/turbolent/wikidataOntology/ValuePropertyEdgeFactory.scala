@@ -72,6 +72,8 @@ object ValuePropertyEdgeFactory {
 
       ("kill", "") -> contextfulReverse(P.wasKilledBy),
 
+
+      ("play", "") -> P.playsInstrument
     )
 
 }
