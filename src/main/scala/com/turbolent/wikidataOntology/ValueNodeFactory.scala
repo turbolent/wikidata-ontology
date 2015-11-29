@@ -44,6 +44,12 @@ object ValueNodeFactory {
       "man" -> { (node, env) =>
         node.out(P.hasGender, Q.male)
       },
+      "university" -> { (node, env) =>
+        val university = env.newNode()
+            .out(P.isA, Q.university)
+        node.out(P.isA, Q.university)
+            .or(out(P.isPartOf, university))
+      },
       "politician" -> instanceOrOccupation(Q.politician),
       "actor" -> instanceOrOccupation(Q.actor),
       "painter" -> instanceOrOccupation(Q.painter),
