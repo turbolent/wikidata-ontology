@@ -28,6 +28,7 @@ package object P {
   val hasCastMember = Property(161, "has cast member")
   val hasPerformer = Property(175, "has performer")
   val isSubclassOf = Property(279, "is subclass of")
+  val isPartOf = Property(361, "is part of")
   val isMemberOf = Property(463, "is member of")
   val hasDateOfBirth = Property(569, "has date of birth")
   val hasDateOfDeath = Property(570, "has date of death")

@@ -98,11 +98,15 @@ class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, Wikidata
         new P_ZeroOrMore1(subclassOfPath)))
   }
 
+  def containmentPath(property: Property) =
+    new P_OneOrMore1(new P_Link(compilePropertyNode(property)))
+
   val paths: mutable.Map[Property, Path] =
     mutable.Map(
       P.isA -> instanceOfSubclassPath(P.isA),
       P.hasOccupation -> instanceOfSubclassPath(P.hasOccupation),
-      P.isLocatedIn -> new P_OneOrMore1(new P_Link(compilePropertyNode(P.isLocatedIn))),
+      P.isPartOf -> containmentPath(P.isPartOf),
+      P.isLocatedIn -> containmentPath(P.isLocatedIn),
       P.hasPlaceOfBirth -> locatedInPath(P.hasPlaceOfBirth),
       P.hasPlaceOfDeath -> locatedInPath(P.hasPlaceOfDeath),
       P.hasFilmingLocation -> locatedInPath(P.hasFilmingLocation))
