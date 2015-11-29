@@ -479,7 +479,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val president = env.newNode()
-          .in(env.newNode(), P.hasHeadOfState)
+          .out(P.holdsPosition, Q.president)
 
       val year: WikidataNode = Year.of(1900)
 
@@ -494,9 +494,9 @@ class OntologyTest extends TestCase {
 
       val expectedQuery = parseSparqlQuery("1",
         """
-          |{ ?2  wdt:P35  ?1
-          |  { ?1  wdt:P569  ?3
-          |    FILTER ( year(?3) < 1900 )
+          |{ ?1 p:P39/(v:P39/(wdt:P279)*) wd:Q30461
+          |  { ?1  wdt:P569  ?2
+          |    FILTER ( year(?2) < 1900 )
           |  }
           |}
         """.stripMargin)
@@ -958,7 +958,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val president = env.newNode()
-          .in(env.newNode(), P.hasHeadOfState)
+          .out(P.holdsPosition, Q.president)
 
       val child = env.newNode()
           .in(president, P.hasChild)
@@ -969,10 +969,10 @@ class OntologyTest extends TestCase {
 
       val actualQuery = compileSparqlQuery(expectedNodes.head, env)
 
-      val expectedQuery = parseSparqlQuery("3",
+      val expectedQuery = parseSparqlQuery("2",
         """
-          |{ ?1  wdt:P40  ?3 .
-          |  ?2  wdt:P35  ?1
+          |{ ?1  wdt:P40  ?2
+          |  { ?1 p:P39/(v:P39/(wdt:P279)*) wd:Q30461 }
           |}
         """.stripMargin)
 
@@ -2524,7 +2524,7 @@ class OntologyTest extends TestCase {
       val env = new WikidataEnvironment()
 
       val president = env.newNode()
-          .in(env.newNode(), P.hasHeadOfState)
+          .out(P.holdsPosition, Q.president)
 
       val child = env.newNode()
           .in(env.newNode(), P.hasChild)
@@ -2537,9 +2537,10 @@ class OntologyTest extends TestCase {
 
       val expectedQuery = parseSparqlQuery("1",
         """
-          |{ ?2  wdt:P35  ?1 .
-          |  ?1  wdt:P40  ?3 .
-          |  ?4  wdt:P40  ?3
+          |{ ?1 p:P39/(v:P39/(wdt:P279)*) wd:Q30461
+          |  { ?1  wdt:P40  ?2 .
+          |    ?3  wdt:P40  ?2
+          |  }
           |}
         """.stripMargin)
 

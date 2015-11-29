@@ -105,6 +105,7 @@ class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, Wikidata
     mutable.Map(
       P.isA -> instanceOfSubclassPath(P.isA),
       P.hasOccupation -> instanceOfSubclassPath(P.hasOccupation),
+      P.holdsPosition -> instanceOfSubclassPath(P.holdsPosition),
       P.isPartOf -> containmentPath(P.isPartOf),
       P.isLocatedIn -> containmentPath(P.isLocatedIn),
       P.hasPlaceOfBirth -> locatedInPath(P.hasPlaceOfBirth),

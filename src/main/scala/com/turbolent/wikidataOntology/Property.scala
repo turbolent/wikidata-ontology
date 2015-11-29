@@ -18,6 +18,7 @@ package object P {
   val hasHeadOfState = Property(35, "has head of state")
   val hasCapital = Property(36, "has capital")
   val hasOfficialLanguage = Property(37, "has official language")
+  val holdsPosition = Property(39, "holds position")
   val hasChild = Property(40, "has child")
   val hasAuthor = Property(50, "has author")
   val hasDirector = Property(57, "has director")

@@ -51,7 +51,7 @@ object RelationshipEdgeFactory {
     }
 
   val factories: Map[String, EdgeFactory] =
-    Map(// NOTE: weaker form, not P.isA, Q.president
+    Map(
       "president" -> reverse(P.hasHeadOfState),
       "actor" -> { (node, env) =>
         out(P.hasOccupation, Q.actor)

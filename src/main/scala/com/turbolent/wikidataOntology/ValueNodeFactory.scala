@@ -20,7 +20,7 @@ object ValueNodeFactory {
       "movie" -> Q.movie,
       "mountain" -> Q.mountain,
       "president" -> { (node, env) =>
-        node.in(env.newNode(), P.hasHeadOfState)
+        node.out(P.holdsPosition, Q.president)
       },
       "author" -> { (node, env) =>
         node.in(env.newNode(), P.hasAuthor)
@@ -631,7 +631,6 @@ object ValueNodeFactory {
 
 
 trait ValueNodeFactory {
-
 
   def makeValueNode(name: Seq[Token], filter: Seq[Token],
                     env: WikidataEnvironment): WikidataNode =
