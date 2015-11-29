@@ -72,6 +72,9 @@ object ValuePropertyEdgeFactory {
 
       ("kill", "") -> contextfulReverse(P.wasKilledBy),
 
+      // NOTE: don't create intermediate node requirement, directly use edge
+      ("work", "as") -> { (node, context, env) => node.edge.get },
+      ("work", "in") -> P.hasFieldOfWork,
 
       ("play", "") -> P.playsInstrument
     )
