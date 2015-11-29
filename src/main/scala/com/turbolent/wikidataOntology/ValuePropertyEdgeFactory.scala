@@ -67,6 +67,9 @@ object ValuePropertyEdgeFactory {
       ("invent", "") -> contextfulReverse(P.hasDiscovererOrInventor),
       ("invent", "by") -> P.hasDiscovererOrInventor,
 
+      ("attend", "") -> P.wasEducatedAt,
+      ("study", "") -> P.wasEducatedAt,
+
       ("kill", "") -> contextfulReverse(P.wasKilledBy),
 
     )

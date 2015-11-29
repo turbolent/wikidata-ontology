@@ -23,6 +23,7 @@ package object P {
   val hasAuthor = Property(50, "has author")
   val hasDirector = Property(57, "has director")
   val hasDiscovererOrInventor = Property(61, "has discoverer or inventor")
+  val wasEducatedAt = Property(69, "was educated at")
   val hasOccupation = Property(106, "has occupation")
   val isLocatedIn = Property(131, "is located in")
   val hasGenre = Property(136, "has genre")

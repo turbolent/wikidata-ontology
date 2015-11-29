@@ -31,7 +31,9 @@ object InversePropertyEdgeFactory {
                 in(date, YearLabel)
             }
         }
-      })
+      },
+      "attend" -> contextfulReverse(P.wasEducatedAt),
+      "study" -> contextfulReverse(P.wasEducatedAt))
 
   def stripInitialAuxiliaryVerb(name: Seq[Token]) =
     name match {
