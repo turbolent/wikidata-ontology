@@ -996,12 +996,17 @@ class OntologyTest extends TestCase {
 
       val city = env.newNode()
           .out(P.isA, Q.city)
-          .out(P.isLocatedIn,
-            env.newNode()
-                .out(NameLabel, "california"))
+
+      val california = env.newNode()
+          .out(NameLabel, "california")
+
+      val californianCity = city
+          .and(out(P.isLocatedIn, california)
+               or out(P.country, california)
+               or out(P.hasHeadquartersLocation, california))
 
       val population = env.newNode()
-          .in(city, P.hasPopulation)
+          .in(californianCity, P.hasPopulation)
 
       val expectedNodes = List(population)
 
@@ -1012,10 +1017,19 @@ class OntologyTest extends TestCase {
       val expectedQuery = parseSparqlQuery("3",
         """
           |{ ?1  wdt:P1082  ?3
-          |  { ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q515
-          |    { ?1 (wdt:P131)+ ?2
-          |      { ?2  rdfs:label  "california"@en }
-          |    }
+          |  { ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q515
+          |      {   { ?1 (wdt:P131)+ ?2
+          |            { ?2  rdfs:label  "california"@en }
+          |          }
+          |        UNION
+          |          { ?1  wdt:P17     ?2 .
+          |            ?2  rdfs:label  "california"@en
+          |          }
+          |      }
+          |    UNION
+          |      { ?1 wdt:P159/(wdt:P131)* ?2
+          |        { ?2  rdfs:label  "california"@en }
+          |      }
           |  }
           |}
         """.stripMargin)

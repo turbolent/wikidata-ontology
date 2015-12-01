@@ -59,8 +59,11 @@ object ValuePropertyEdgeFactory {
       ("speak", "in") -> contextfulReverse(P.hasOfficialLanguage),
       ("be speak", "in") -> contextfulReverse(P.hasOfficialLanguage),
       ("be author", "by") -> P.hasAuthor,
-      ("locate", "in") -> P.isLocatedIn,
-
+      ("locate", "in") -> { (node, context, env) =>
+        out(P.isLocatedIn, node) or
+        out(P.country, node) or
+        out(P.hasHeadquartersLocation, node)
+      },
       ("discover", "") -> contextfulReverse(P.hasDiscovererOrInventor),
       ("discover", "by") -> P.hasDiscovererOrInventor,
 

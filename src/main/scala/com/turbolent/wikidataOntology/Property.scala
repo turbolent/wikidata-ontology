@@ -12,7 +12,6 @@ package object P {
   val hasFather = Property(22, "has father")
   val hasMother = Property(25, "has mother")
   val hasSpouse = Property(26, "has spouse")
-
   // NOTE: avoid name clash with Scala's isInstanceOf
   val isA = Property(31, "is instance of")
   val hasHeadOfState = Property(35, "has head of state")
@@ -29,6 +28,7 @@ package object P {
   val isLocatedIn = Property(131, "is located in")
   val hasGenre = Property(136, "has genre")
   val wasKilledBy = Property(157, "was killed by")
+  val hasHeadquartersLocation = Property(159, "has headquarters location")
   val hasCastMember = Property(161, "has cast member")
   val hasPerformer = Property(175, "has performer")
   val isSubclassOf = Property(279, "is subclass of")

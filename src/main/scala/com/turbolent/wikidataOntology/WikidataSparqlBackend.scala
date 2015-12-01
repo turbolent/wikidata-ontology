@@ -110,7 +110,8 @@ class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, Wikidata
       P.isLocatedIn -> containmentPath(P.isLocatedIn),
       P.hasPlaceOfBirth -> locatedInPath(P.hasPlaceOfBirth),
       P.hasPlaceOfDeath -> locatedInPath(P.hasPlaceOfDeath),
-      P.hasFilmingLocation -> locatedInPath(P.hasFilmingLocation))
+      P.hasFilmingLocation -> locatedInPath(P.hasFilmingLocation),
+      P.hasHeadquartersLocation -> locatedInPath(P.hasHeadquartersLocation))
 
   def compileProperty(property: Property): Either[JenaNode, Path] =
     paths.get(property) map { Right(_) } getOrElse {
