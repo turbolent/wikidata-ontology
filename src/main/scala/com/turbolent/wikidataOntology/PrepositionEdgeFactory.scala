@@ -22,7 +22,7 @@ object PrepositionEdgeFactory {
 
   def isPrepositionProperty(name: Seq[Token], filter: Seq[Token]) =
     (name, filter) match {
-      case (Nil, Seq(Token(_, "IN"))) => true
+      case (Nil, Seq(Token(_, "IN", _))) => true
       case _ => false
     }
 

@@ -30,8 +30,8 @@
 
         <dependency>
             <groupId>com.turbolent</groupId>
-            <artifactId>question-parser</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <artifactId>question-parser_2.11</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

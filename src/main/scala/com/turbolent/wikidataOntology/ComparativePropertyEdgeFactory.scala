@@ -23,8 +23,8 @@ object ComparativePropertyEdgeFactory {
 
   val namedFactories: mutable.Map[(String, String, String), ContextfulEdgeFactory] =
     mutable.Map(
-      ("city", "be", "bigger than") -> makeComparisonFactory(P.hasArea, GreaterThanFilter(_)),
-      ("city", "be", "smaller than") -> makeComparisonFactory(P.hasArea, LessThanFilter(_)),
+      ("city", "be", "big than") -> makeComparisonFactory(P.hasArea, GreaterThanFilter(_)),
+      ("city", "be", "small than") -> makeComparisonFactory(P.hasArea, LessThanFilter(_)),
       // NOTE: comparison handled in NumberNodeFactory
       ("city", "live", "more than") -> P.hasPopulation,
       ("city", "live", "less than") -> P.hasPopulation)
@@ -36,7 +36,7 @@ object ComparativePropertyEdgeFactory {
   val personFactories: mutable.Map[(String, String), ContextfulEdgeFactory] =
     mutable.Map(
       // TODO: improve: take into account death date
-      ("be", "older than") -> makeComparisonFactory(P.hasDateOfBirth, LessThanFilter(_)))
+      ("be", "old than") -> makeComparisonFactory(P.hasDateOfBirth, LessThanFilter(_)))
 
 }
 
