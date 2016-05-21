@@ -1,5 +1,7 @@
 package com.turbolent.wikidataOntology
 
+import scala.language.implicitConversions
+
 import java.time.temporal.Temporal
 
 import com.turbolent.questionCompiler.EdgeContext
