@@ -10,8 +10,8 @@ if [[ "$TRAVIS_PULL_REQUEST" == "false" && $TRAVIS_BRANCH == "master" ]]; then
   export REPO_DIR=$(mktemp -d 2>/dev/null || mktemp -d -t mvn-repo)
   git clone https://$GH_TOKEN:x-oauth-basic@github.com/turbolent/mvn-repo.git $REPO_DIR
 
-  echo -e "Running maven deploy ...\n"
-  mvn deploy -DrepositoryPath=$REPO_DIR -DskipTests
+  echo -e "Running sbt aether-deploy ...\n"
+  sbt -DrepositoryPath=$REPO_DIR aether-deploy
 
   echo -e "Committing and pushing ...\n"
   cd $REPO_DIR
