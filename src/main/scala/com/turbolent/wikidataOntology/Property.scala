@@ -12,6 +12,7 @@ package object P {
   val hasFather = Property(22, "has father")
   val hasMother = Property(25, "has mother")
   val hasSpouse = Property(26, "has spouse")
+  val countryOfCitizenship = Property(27, "country of citizenship")
   // NOTE: avoid name clash with Scala's isInstanceOf
   val isA = Property(31, "is instance of")
   val hasHeadOfState = Property(35, "has head of state")
