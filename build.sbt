@@ -15,6 +15,8 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 )
 
+publishArtifact in (Test, packageBin) := true
+
 publishMavenStyle := true
 
 publishTo := {
