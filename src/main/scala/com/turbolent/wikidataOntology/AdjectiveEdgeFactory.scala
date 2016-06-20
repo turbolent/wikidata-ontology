@@ -1,8 +1,9 @@
 package com.turbolent.wikidataOntology
 
-import com.turbolent.questionCompiler.graph.Max
+import com.turbolent.questionCompiler.graph.Descending
 import com.turbolent.questionParser.Token
-import Tokens._
+import com.turbolent.wikidataOntology.Tokens._
+
 import scala.collection.mutable
 
 
@@ -12,7 +13,7 @@ object AdjectiveEdgeFactory {
 
   def maxPopulation(env: WikidataEnvironment) =
     out(P.hasPopulation,
-      env.newNode().aggregate(Max))
+      env.newNode().order(Descending))
 
   val factories: mutable.Map[(String, String), PlainEdgeFactory] =
     mutable.Map(

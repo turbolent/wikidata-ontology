@@ -22,7 +22,8 @@ class SPARQLSuite extends FunSuite with Utilities {
 
     val actualQuery = compileSparqlQuery(root, env)
 
-    val expectedQuery = parseSparqlQuery("3", """
+    val expectedQuery = parseSparqlQuery("3",
+      """
         |{ ?3 p:P31/(v:P31/(wdt:P279)*) wd:Q5
         |    { ?1  wdt:P61     ?3 ;
         |          rdfs:label  "Pluto"@en
@@ -32,7 +33,8 @@ class SPARQLSuite extends FunSuite with Utilities {
         |          rdfs:label  "Nix"@en
         |    }
         |}
-      """.stripMargin)
+      """.stripMargin,
+      None)
 
     assertEquivalent(expectedQuery, actualQuery)
   }
@@ -50,13 +52,15 @@ class SPARQLSuite extends FunSuite with Utilities {
 
     val actualQuery = compileSparqlQuery(root, env)
 
-    val expectedQuery = parseSparqlQuery("1", """
+    val expectedQuery = parseSparqlQuery("1",
+      """
         |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q5
         |  { ?2  wdt:P161    ?1 ;
         |        rdfs:label  "Alien"@en
         |  }
         |}
-      """.stripMargin)
+      """.stripMargin,
+      None)
 
     assertEquivalent(expectedQuery, actualQuery)
   }
@@ -72,11 +76,13 @@ class SPARQLSuite extends FunSuite with Utilities {
 
     val actualQuery = compileSparqlQuery(root, env)
 
-    val expectedQuery = parseSparqlQuery("1", """
+    val expectedQuery = parseSparqlQuery("1",
+      """
         |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q8502
         |  { ?1  wdt:P2044   "1000.0"^^<http://www.w3.org/2001/XMLSchema#integer> }
         |}
-      """.stripMargin)
+      """.stripMargin,
+      None)
 
     assertEquivalent(expectedQuery, actualQuery)
   }
@@ -100,13 +106,15 @@ class SPARQLSuite extends FunSuite with Utilities {
 
     val actualQuery = compileSparqlQuery(root, env)
 
-    val expectedQuery = parseSparqlQuery("4", """
+    val expectedQuery = parseSparqlQuery("4",
+      """
         |{ ?4  wdt:P2046  ?3 .
         |  ?1  wdt:P2046  ?2
         |  FILTER ( ?2 > "23.0"^^xsd:double )
         |  FILTER ( ?3 < ?2 )
         |}
-      """.stripMargin)
+      """.stripMargin,
+      None)
 
     assertEquivalent(expectedQuery, actualQuery)
   }
@@ -146,7 +154,8 @@ class SPARQLSuite extends FunSuite with Utilities {
 
     val actualQuery = compileSparqlQuery(root, env)
 
-    val expectedQuery = parseSparqlQuery("1", """
+    val expectedQuery = parseSparqlQuery("1",
+      """
         |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q515
         |  { { ?1  wdt:P2046  ?4 .
         |      ?2  wdt:P2046  ?3 .
@@ -155,7 +164,8 @@ class SPARQLSuite extends FunSuite with Utilities {
         |    FILTER ( ?4 > ?3 )
         |  }
         |}
-      """.stripMargin)
+      """.stripMargin,
+      None)
 
     assertEquivalent(expectedQuery, actualQuery)
   }
@@ -176,12 +186,14 @@ class SPARQLSuite extends FunSuite with Utilities {
 
     val actualQuery = compileSparqlQuery(root, env)
 
-    val expectedQuery = parseSparqlQuery("2", """
+    val expectedQuery = parseSparqlQuery("2",
+      """
         |{ ?2  wdt:P2046  ?1 .
         |  FILTER ( ?1 > "23.0"^^xsd:double )
         |  FILTER ( ?1 < "42.0"^^xsd:double )
         |}
-      """.stripMargin)
+      """.stripMargin,
+      None)
 
     assertEquivalent(expectedQuery, actualQuery)
   }

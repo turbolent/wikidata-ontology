@@ -3,7 +3,7 @@ package com.turbolent.wikidataOntology
 import java.time.Year
 
 import com.turbolent.questionCompiler.graph._
-import org.scalatest.{FunSuite, Matchers}
+import org.scalatest.FunSuite
 
 
 // scalastyle:off multiple.string.literals
@@ -12,7 +12,7 @@ class SentenceSuite extends FunSuite with Utilities {
 
   def test(sentence: String,
            expectedNodesGenerator: (WikidataEnvironment) => List[WikidataNode],
-           expectedQueries: (String, String)*) {
+           expectedQueries: (String, String, Option[String])*) {
 
     val tokens = tokenize(sentence)
     val testName = tokens.map(_.word).mkString(" ")
@@ -23,9 +23,9 @@ class SentenceSuite extends FunSuite with Utilities {
       val expectedNodes = expectedNodesGenerator(env)
       actualNodes shouldEqual expectedNodes
 
-      for ((expectedNode, (variable, expectedQueryString)) <- expectedNodes zip expectedQueries) {
+      for ((expectedNode, (variable, expectedQueryString, ordering)) <- expectedNodes zip expectedQueries) {
         val actualQuery = compileSparqlQuery(expectedNode, env)
-        val expectedQuery = parseSparqlQuery(variable, expectedQueryString)
+        val expectedQuery = parseSparqlQuery(variable, expectedQueryString, ordering)
         assertEquivalent(expectedQuery, actualQuery)
       }
     }
@@ -46,13 +46,15 @@ class SentenceSuite extends FunSuite with Utilities {
 
       List(person.in(movie, P.hasCastMember))
     },
-    ("1", """
-      |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q5
-      |  { ?2  wdt:P161    ?1 ;
-      |        rdfs:label  "Alien"@en
-      |  }
-      |}
-    """.stripMargin))
+    ("1", 
+      """
+        |{ ?1  p:P31/(v:P31/(wdt:P279)*)  wd:Q5
+        |  { ?2  wdt:P161    ?1 ;
+        |        rdfs:label  "Alien"@en
+        |  }
+        |}
+      """.stripMargin, 
+      None))
 
 
   test("who/WP/who starred/VBD/star in/IN/in Inception/NNP/inception",
@@ -77,7 +79,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |       rdfs:label  "Inception"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Movies/NNP/movie starring/VB/star Winona/NNP/winona Ryder/NNP/ryder",
@@ -101,7 +104,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "Winona Ryder"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("In/IN/in what/WDT/what movies/NN/movie did/VBD/do Jennifer/NNP/jennifer Aniston/NNP/aniston appear/VB/appear",
@@ -125,7 +129,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "Jennifer Aniston"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("who/WP/who are/VBP/be the/DT/the actors/NNS/actor "
@@ -155,7 +160,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  ?2  wdt:P161    ?1 ;
         |      rdfs:label  "Inception"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("who/WP/who directed/VBD/direct Pocahontas/NNP/pocahontas",
@@ -179,7 +185,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |        rdfs:label  "Pocahontas"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Who/WP/who did/VBD/do Bill/NNP/bill Clinton/NNP/clinton marry/VB/marry",
@@ -204,7 +211,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "Bill Clinton"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("which/WDT/which mountains/NNS/mountain are/VBP/be 1000/CD/1000 meters/NNS/meter high/JJ/high",
@@ -227,7 +235,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q8502
         |  { ?1  wdt:P2044  "1000.0"^^xsd:integer }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("authors/NNS/author which/WDT/which died/VBD/die in/IN/in Berlin/NNP/berlin",
@@ -253,7 +262,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    { ?3  rdfs:label  "Berlin"@en }
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("authors/NNS/author which/WDT/which were/VBD/be born/VBD/bear in/IN/in Berlin/NNP/berlin"
@@ -292,7 +302,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    { ?4  rdfs:label  "Paris"@en }
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("who/WP/who was/VBD/be born/VBD/bear in/IN/in Berlin/NNP/berlin or/CC/or died/VBD/die in/IN/in Paris/NNP/paris",
@@ -329,7 +340,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |      { ?3  rdfs:label  "Paris"@en }
         |    }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Which/WDT/which presidents/NNS/president were/VBD/be born/VBN/bear before/IN/before 1900/CD/1900",
@@ -356,7 +368,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    FILTER ( year(?2) < 1900 )
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Give/VB/give me/PRP/me all/DT/all actors/NNS/actor born/VBN/bear"
@@ -396,7 +409,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |      { ?3  rdfs:label  "San Francisco"@en }
         |    }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Which/WDT/which movies/NNS/movie "
@@ -443,7 +457,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |      { ?4  rdfs:label  "California"@en }
         |    }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Give/VB/give me/PRP/me all/DT/all musicians/NNS/musician that/WDT/that were/VBD/be born/VBN/bear"
@@ -486,7 +501,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    { ?3  rdfs:label  "Berlin"@en }
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Which/WDT/which books/NN/book did/VBD/do George/NNP/george Orwell/NNP/orwell write/VB/write",
@@ -511,7 +527,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "George Orwell"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("list/VB/list presidents/NNS/president of/IN/of Argentina/NNP/argentina",
@@ -533,7 +550,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P35     ?2 ;
         |      rdfs:label  "Argentina"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("List/VB/list albums/NNS/album of/IN/of Pink/NNP/pink Floyd/NNP/floyd",
@@ -558,7 +576,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?1  rdfs:label  "Pink Floyd"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("List/VB/list the/DT/the actors/NNS/actor of/IN/of Titanic/NNP/titanic",
@@ -584,7 +603,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |        rdfs:label  "Titanic"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Who/WP/who is/VBZ/be the/DT/the director/NN/director of/IN/of Big/NN/big Fish/NN/fish",
@@ -610,7 +630,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |        rdfs:label  "Big Fish"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("What/WP/what are/VBP/be the/DT/the members/NNS/member of/IN/of Metallica/NNP/metallica",
@@ -633,7 +654,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?2  wdt:P463    ?1 .
         |  ?1  rdfs:label  "Metallica"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("members/NNS/member of/IN/of Metallica/NNP/metallica",
@@ -655,7 +677,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?2  wdt:P463    ?1 .
         |  ?1  rdfs:label  "Metallica"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("What/WP/what is/VBZ/be the/DT/the music/NN/music genre/NN/genre of/IN/of Gorillaz/NNP/gorillaz",
@@ -681,7 +704,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |        rdfs:label  "Gorillaz"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("What/WP/what is/VBZ/be the/DT/the cast/NN/cast of/IN/of Friends/NNS/friend",
@@ -703,7 +727,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P161    ?2 ;
         |      rdfs:label  "Friends"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("who/WP/who are/VBP/be the/DT/the children/NNS/child of/IN/of the/DT/the presidents/NNS/president",
@@ -727,7 +752,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P40  ?2
         |  { ?1 p:P39/(v:P39/(wdt:P279)*) wd:Q30461 }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("what/WP/what are/VBP/be the/DT/the population/NN/population sizes/NNS/size"
@@ -777,7 +803,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |      }
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Who/WP/who are/VBP/be the/DT/the children/NNS/child of/IN/of the/DT/the children/NNS/child"
@@ -808,7 +835,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  ?1  wdt:P40     ?2 ;
         |      rdfs:label  "Bill Clinton"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Clinton/NNP/clinton 's/POS/'s daughters/NN/daughter",
@@ -833,10 +861,9 @@ class SentenceSuite extends FunSuite with Utilities {
         |  ?1  wdt:P40     ?2 ;
         |      rdfs:label  "Clinton"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
-
-  // TODO: implement aggregates in SPARQL compiler
 
   test("What/WP/what are/VBP/be the/DT/the largest/JJS/large cities/NNS/city of/IN/of California/NNP/california",
 
@@ -850,7 +877,7 @@ class SentenceSuite extends FunSuite with Utilities {
         .out(NameLabel, "California")
 
       val population = env.newNode()
-        .aggregate(Max)
+        .order(Descending)
 
       val city = env.newNode()
         .out(P.isA, Q.city)
@@ -858,10 +885,19 @@ class SentenceSuite extends FunSuite with Utilities {
         .out(P.hasPopulation, population)
 
       List(city)
-    })
+    },
+    ("3",
+      """
+        |{ { ?3 p:P31/(v:P31/(wdt:P279)*) wd:Q515
+        |    { ?3 (wdt:P131)+ ?1
+        |      { ?1  rdfs:label  "California"@en }
+        |    }
+        |  }
+        |  ?3  wdt:P1082  ?2
+        |}
+      """.stripMargin,
+      Some("DESC(?2)")))
 
-
-  // TODO: implement aggregates in SPARQL compiler
 
   test("What/WP/what are/VBP/be the/DT/the biggest/JJS/big cities/NNS/city"
       + " of/IN/of California/NNP/california",
@@ -876,7 +912,7 @@ class SentenceSuite extends FunSuite with Utilities {
           .out(NameLabel, "California")
 
       val population = env.newNode()
-          .aggregate(Max)
+          .order(Descending)
 
       val city = env.newNode()
           .out(P.isA, Q.city)
@@ -884,10 +920,19 @@ class SentenceSuite extends FunSuite with Utilities {
           .out(P.hasPopulation, population)
 
       List(city)
-    })
+    },
+    ("3",
+      """
+        |{ { ?3 p:P31/(v:P31/(wdt:P279)*) wd:Q515
+        |    { ?3 (wdt:P131)+ ?1
+        |      { ?1  rdfs:label  "California"@en }
+        |    }
+        |  }
+        |  ?3  wdt:P1082  ?2
+        |}
+      """.stripMargin,
+      Some("DESC(?2)")))
 
-
-  // TODO: implement aggregates in SPARQL compiler
 
   test("What/WP/what are/VBP/be California/NNP/california 's/POS/'s"
     + " biggest/JJS/big cities/NNS/city",
@@ -902,7 +947,7 @@ class SentenceSuite extends FunSuite with Utilities {
           .out(NameLabel, "California")
 
       val population = env.newNode()
-          .aggregate(Max)
+          .order(Descending)
 
       val city = env.newNode()
           .out(P.isA, Q.city)
@@ -910,7 +955,18 @@ class SentenceSuite extends FunSuite with Utilities {
           .out(P.hasPopulation, population)
 
       List(city)
-    })
+    },
+    ("3",
+      """
+        |{ { ?3 p:P31/(v:P31/(wdt:P279)*) wd:Q515
+        |    { ?3 (wdt:P131)+ ?1
+        |      { ?1  rdfs:label  "California"@en }
+        |    }
+        |  }
+        |  ?3  wdt:P1082  ?2
+        |}
+      """.stripMargin,
+      Some("DESC(?2)")))
 
 
   test("Who/WP/who is/VBZ/be Bill/NNP/bill Clinton/NNP/clinton 's/POS/'s daughter/NN/daughter",
@@ -935,7 +991,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  ?1  wdt:P40     ?2 ;
         |      rdfs:label  "Bill Clinton"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Who/WP/who is/VBZ/be Bill/NNP/bill Clinton/NNP/clinton 's/POS/'s daughter/NN/daughter 's/POS/'s"
@@ -990,7 +1047,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |      rdfs:label  "Bill Clinton"@en
         |}
         |
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Who/WP/who are/VBP/be the/DT/the daughters/NNS/daughter of/IN/of the/DT/the wife/NN/wife of/IN/of"
@@ -1032,7 +1090,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  ?1  wdt:P35     ?2 ;
         |      rdfs:label  "the United States"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Who/WP/who is/VBZ/be the/DT/the son/NN/son of/IN/of the/DT/the actor/NN/actor of/IN/of"
@@ -1070,7 +1129,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    }
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("children/NNS/child of/IN/of all/DT/all presidents/NNS/president of/IN/of the/DT/the US/NNP/us",
@@ -1099,7 +1159,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  ?1  wdt:P35     ?2 ;
         |      rdfs:label  "the US"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("List/VB/list movies/NNS/movie directed/VBN/direct by/IN/by Quentin/NNP/quentin Tarantino/NNP/tarantino",
@@ -1125,7 +1186,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "Quentin Tarantino"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Which/WDT/which movies/NN/movie did/VBD/do Mel/NNP/mel Gibson/NNP/gibson direct/VB/direct",
@@ -1150,7 +1212,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "Mel Gibson"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("actors/NNP/actor",
@@ -1170,7 +1233,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  UNION
         |    { ?1 p:P106/(v:P106/(wdt:P279)*) wd:Q33999 }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("what/WDT/what languages/NNS/language are/VBP/be spoken/VBN/speak in/IN/in Switzerland/NNP/switzerland",
@@ -1197,7 +1261,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |        rdfs:label  "Switzerland"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Which/WDT/which books/NN/book did/VBD/do Orwell/NNP/orwell or/CC/or Shakespeare/NNP/shakespeare write/VB/write",
@@ -1232,7 +1297,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |      ?3  rdfs:label  "Shakespeare"@en
         |    }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("which/WDT/which books/NN/book were/VBD/be authored/VBN/author by/IN/by George/NNP/george Orwell/NNP/orwell",
@@ -1259,7 +1325,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "George Orwell"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("which/WDT/which instrument/NN/instrument did/VBD/do John/NNP/john Lennon/NNP/lennon play/VB/play",
@@ -1285,7 +1352,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |        rdfs:label  "John Lennon"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Who/WP/who wrote/VBD/write \"/``/\" Le/NNP/le Petit/NNP/petit Prince/NNP/prince \"/''/\""
@@ -1320,7 +1388,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  ?3  wdt:P50     ?1 ;
         |      rdfs:label  "Vol de Nuit"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("What/WP/what did/VBD/do George/NNP/george Orwell/NNP/orwell write/VB/write",
@@ -1343,7 +1412,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P50     ?2 .
         |  ?2  rdfs:label  "George Orwell"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("What/WP/what was/VBD/be authored/VBN/author by/IN/by George/NNP/george Orwell/NNP/orwell",
@@ -1366,7 +1436,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P50     ?2 .
         |  ?2  rdfs:label  "George Orwell"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("What/WP/what books/NNP/book were/VBD/be authored/VBN/author by/IN/by George/NNP/george Orwell/NNP/orwell",
@@ -1393,7 +1464,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "George Orwell"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("authors/NNS/author who/WP/who died/VBD/die",
@@ -1418,7 +1490,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  UNION
         |    { ?1  wdt:P20/(wdt:P131)*  ?3 }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("What/WDT/what actor/NN/actor married/VBD/marry"
@@ -1452,7 +1525,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  ?2  wdt:P9      ?3 ;
         |      rdfs:label  "John F. Kennedy"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Who/WP/who did/VBD/do Bill/NNP/bill Clinton/NNP/clinton 's/POS/'s daughter/NN/daughter marry/VB/marry",
@@ -1483,7 +1557,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |        rdfs:label  "Bill Clinton"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Clinton/NNP/clinton 's/POS/'s children/NNS/child and/CC/and grandchildren/NNS/grandchild",
@@ -1513,14 +1588,16 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P40     ?2 ;
         |      rdfs:label  "Clinton"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("4",
       """
         |{ ?3  wdt:P40     ?4 .
         |  ?1  wdt:P40     ?3 ;
         |      rdfs:label  "Clinton"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("What/WP/what are/VBP/be the/DT/the population/NN/population"
@@ -1550,13 +1627,15 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P1082   ?3 ;
         |      rdfs:label  "China"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("4",
       """
         |{ ?2  wdt:P1082   ?4 ;
         |      rdfs:label  "the USA"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("the/DT/the population/NNP/population of/IN/of Japan/NNP/japan and/CC/and China/NNP/china",
@@ -1585,13 +1664,15 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P1082   ?3 ;
         |      rdfs:label  "Japan"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("4",
       """
         |{ ?2  wdt:P1082   ?4 ;
         |      rdfs:label  "China"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("the/DT/the population/NNP/population and/CC/and area/NNP/area"
@@ -1631,25 +1712,29 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P1082   ?3 ;
         |      rdfs:label  "Japan"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("4",
       """
         |{ ?2  wdt:P1082   ?4 ;
         |      rdfs:label  "China"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("5",
       """
         |{ ?1  wdt:P2046   ?5 ;
         |      rdfs:label  "Japan"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("6",
       """
         |{ ?2  wdt:P2046   ?6 ;
         |      rdfs:label  "China"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("the/DT/the population/NN/population ,/,/, land/NN/land area/NN/area and/CC/and capitals/NNP/capital of/IN/of"
@@ -1710,55 +1795,64 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P1082   ?4 ;
         |      rdfs:label  "Japan"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("5",
       """
         |{ ?2  wdt:P1082   ?5 ;
         |      rdfs:label  "India"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("6",
       """
         |{ ?3  wdt:P1082   ?6 ;
         |      rdfs:label  "China"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("7",
       """
         |{ ?1  wdt:P2046   ?7 ;
         |      rdfs:label  "Japan"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("8",
       """
         |{ ?2  wdt:P2046   ?8 ;
         |      rdfs:label  "India"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("9",
       """
         |{ ?3  wdt:P2046   ?9 ;
         |      rdfs:label  "China"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("10",
       """
         |{ ?1  wdt:P36     ?10 ;
         |      rdfs:label  "Japan"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("11",
       """
         |{ ?2  wdt:P36     ?11 ;
         |      rdfs:label  "India"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("12",
       """
         |{ ?3  wdt:P36     ?12 ;
         |      rdfs:label  "China"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Japan/NNP/japan and/CC/and China/NNP/china 's/POS/'s population/NNP/population and/CC/and area/NNP/area",
@@ -1796,25 +1890,29 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P1082   ?3 ;
         |      rdfs:label  "Japan"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("4",
       """
         |{ ?2  wdt:P1082   ?4 ;
         |      rdfs:label  "China"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("5",
       """
         |{ ?1  wdt:P2046   ?5 ;
         |      rdfs:label  "Japan"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("6",
       """
         |{ ?2  wdt:P2046   ?6 ;
         |      rdfs:label  "China"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("children/NNS/child and/CC/and grandchildren/NNS/grandchild of/IN/of Clinton/NNP/clinton",
@@ -1844,14 +1942,16 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P40     ?2 ;
         |      rdfs:label  "Clinton"@en
         |}
-      """.stripMargin),
+      """.stripMargin,
+      None),
     ("4",
       """
         |{ ?3  wdt:P40     ?4 .
         |  ?1  wdt:P40     ?3 ;
         |      rdfs:label  "Clinton"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("who/WP/who wrote/VBD/write books/NNS/book",
@@ -1875,7 +1975,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    { ?2 p:P31/(v:P31/(wdt:P279)*) wd:Q571 }
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("presidents/NNS/president that/WDT/that have/VBP/have children/NNS/child",
@@ -1900,10 +2001,9 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?3  wdt:P40  ?2
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
-
-  // TODO: implement aggregates in SPARQL compiler
 
   test("what/WP/what are/VBP/be the/DT/the largest/JJS/large cities/NNS/city in/IN/in europe/NN/europe",
 
@@ -1918,7 +2018,7 @@ class SentenceSuite extends FunSuite with Utilities {
           .out(P.isA, Q.city)
 
       val population = env.newNode()
-          .aggregate(Max)
+          .order(Descending)
 
       val europe = env.newNode()
           .out(NameLabel, "europe")
@@ -1926,7 +2026,18 @@ class SentenceSuite extends FunSuite with Utilities {
       List(city
           .out(P.hasPopulation, population)
           .out(P.isLocatedIn, europe))
-    })
+    },
+    ("1",
+      """
+        |{ { ?1 p:P31/(v:P31/(wdt:P279)*) wd:Q515
+        |    { ?1  wdt:P1082  ?2 }
+        |  }
+        |  { ?1 (wdt:P131)+ ?3
+        |    { ?3  rdfs:label  "europe"@en }
+        |  }
+        |}
+      """.stripMargin,
+      Some("DESC(?2)")))
 
 
   test("List/VB/list books/NNS/book by/IN/by George/NNP/george Orwell/NNP/orwell",
@@ -1952,7 +2063,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "George Orwell"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Which/WDT/which city/NN/city is/VBZ/be bigger/JJR/big than/IN/than New/NNP/new York/NNP/york City/NNP/city",
@@ -1987,7 +2099,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    FILTER ( ?4 > ?3 )
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("who/WP/who is/VBZ/be older/JJR/old than/IN/than Obama/NNP/obama",
@@ -2020,7 +2133,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    FILTER ( ?4 < ?3 )
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("which/WDT/which mountains/NNS/mountain are/VBP/be "
@@ -2049,7 +2163,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    FILTER ( ?2 > "1000.0"^^xsd:integer )
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Which/WDT/which cities/NNS/city have/VBP/have more/JJR/more than/IN/than "
@@ -2079,7 +2194,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    FILTER ( ?2 > "2000000.0"^^xsd:double )
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   // TODO: adjective "californian": P.isLocatedIn
@@ -2112,7 +2228,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    FILTER ( ?2 > "2000000.0"^^xsd:double )
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test(s"who/WP/who is/VBD/be the/DT/the discoverer/NNS/discoverer of/IN/of Pluto/NNP/pluto",
@@ -2131,7 +2248,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |{ ?1  wdt:P61     ?2 ;
         |      rdfs:label  "Pluto"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   // TODO: implement aggregates in SPARQL compiler
@@ -2149,7 +2267,7 @@ class SentenceSuite extends FunSuite with Utilities {
       val planet = env.newNode()
           .out(P.isA, Q.planet)
           .aggregate(Count)
-          .aggregate(Max)
+          .order(Descending)
 
       List(discoverer
           .in(planet, P.hasDiscovererOrInventor))
@@ -2180,7 +2298,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |  ?1  wdt:P26     ?2 ;
         |      rdfs:label  "Clinton"@en
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Which/WDT/which books/NNS/book were/VBD/be written/VBN/write by/IN/by Jane/NNP/jane Austen/NNP/austen",
@@ -2206,7 +2325,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?2  rdfs:label  "Jane Austen"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("Which/WDT/which country/NN/country was/VBD/be Obama/NNP/obama born/VBN/bear in/IN/in",
@@ -2238,7 +2358,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    }
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   // TODO: implement YearLabel as binding of year of root variable
@@ -2301,7 +2422,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    ?1  rdfs:label  "Seth Gabel"@en
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
   test("who/WP/who died/VBD/die in/IN/in Paris/NNP/paris",
 
@@ -2322,7 +2444,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    { ?2  rdfs:label  "Paris"@en }
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("who/WP/who died/VBD/die before/IN/before 1900/CD/1900",
@@ -2345,7 +2468,8 @@ class SentenceSuite extends FunSuite with Utilities {
         |    FILTER ( year(?2) < 1900 )
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 
   test("who/WP/who died/VBD/die in/IN/in 1900/CD/1900",
@@ -2364,6 +2488,7 @@ class SentenceSuite extends FunSuite with Utilities {
         |    FILTER ( year(?2) = 1900 )
         |  }
         |}
-      """.stripMargin))
+      """.stripMargin,
+      None))
 
 }

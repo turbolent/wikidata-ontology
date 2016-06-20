@@ -1,9 +1,10 @@
 package com.turbolent.wikidataOntology
 
-import com.turbolent.questionCompiler.graph.{Max, Count}
+import com.turbolent.questionCompiler.graph.{Count, Descending}
 import com.turbolent.questionParser.Token
-import AdjectiveEdgeFactory.makeAdjectiveEdge
-import Tokens._
+import com.turbolent.wikidataOntology.AdjectiveEdgeFactory.makeAdjectiveEdge
+import com.turbolent.wikidataOntology.Tokens._
+
 import scala.collection.mutable
 
 
@@ -620,7 +621,7 @@ object ValueNodeFactory {
   val adjectiveFactories: mutable.Map[String, NodeFactory] =
     mutable.Map("most" -> {
       (node, env) =>
-        node.aggregate(Count).aggregate(Max)
+        node.aggregate(Count).order(Descending)
     })
 
   def wrapAdjective(adjectives: Seq[Token], node: WikidataNode,

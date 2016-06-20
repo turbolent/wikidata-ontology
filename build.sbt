@@ -10,7 +10,7 @@ resolvers += "turbolent" at "https://raw.githubusercontent.com/turbolent/mvn-rep
 
 libraryDependencies ++= Seq(
   "com.turbolent" %% "question-parser" % "1.0-SNAPSHOT",
-  "com.turbolent" %% "question-compiler" % "1.0-SNAPSHOT",
+  "com.turbolent" %% "question-compiler" % "1.1-SNAPSHOT",
   "com.turbolent" % "number-parser" % "0.1-SNAPSHOT",
   "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 )

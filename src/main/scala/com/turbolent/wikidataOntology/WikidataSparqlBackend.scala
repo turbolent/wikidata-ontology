@@ -171,7 +171,7 @@ class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, Wikidata
 
   override def prepareLeftFunctionExpression(leftExpr: Expr, otherNode: NodeT) =
     otherNode match {
-      case Node(TemporalLabel(year: Year), _, _, _) =>
+      case Node(TemporalLabel(year: Year), _, _, _, _) =>
         new E_DateTimeYear(leftExpr)
 
       case _ =>

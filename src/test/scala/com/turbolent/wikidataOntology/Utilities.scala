@@ -51,7 +51,7 @@ trait Utilities extends Matchers {
                    |
                  """.stripMargin
 
-  val SELECT_FORMAT = "SELECT DISTINCT ?%s  ?%sLabel"
+  val SELECT_FORMAT = "SELECT DISTINCT ?%s ?%sLabel"
   val WHERE_FORMAT = """
                        |WHERE {
                        |  %s
@@ -60,13 +60,17 @@ trait Utilities extends Matchers {
                        |  }
                        |}
                      """.stripMargin
+  val ORDER_FORMAT = "ORDER BY %s"
 
-  def parseSparqlQuery(variable: String, query: String) =
+  def parseSparqlQuery(variable: String, query: String, ordering: Option[String]) =
     QueryFactory.create(PROLOGUE
       + String.format(SELECT_FORMAT, variable, variable)
-      + String.format(WHERE_FORMAT, query))
+      + String.format(WHERE_FORMAT, query)
+      + ordering.map(String.format(ORDER_FORMAT, _)).getOrElse(""))
 
-  def compileSparqlQuery(node: WikidataNode, env: WikidataEnvironment) =
-    new SparqlGraphCompiler(new WikidataSparqlBackend, env)
-      .compileQuery(node)
+  def compileSparqlQuery(node: WikidataNode, env: WikidataEnvironment) = {
+    val backend = new WikidataSparqlBackend
+    val compiler = new SparqlGraphCompiler(backend, env)
+    compiler.compileQuery(node)
+  }
 }
