@@ -1,6 +1,6 @@
 organization := "com.turbolent"
 name := "wikidata-ontology"
-version := "1.0-SNAPSHOT"
+version := "1.1-SNAPSHOT"
 
 scalaVersion := "2.11.8"
 
