@@ -30,6 +30,7 @@ object InversePropertyEdgeFactory {
                     .in(node, P.hasDateOfBirth)
                 in(date, YearLabel)
             }
+          case _ => ???
         }
       },
       "attend" -> contextfulReverse(P.wasEducatedAt),

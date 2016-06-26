@@ -157,8 +157,8 @@ class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, Wikidata
     OpJoin.create(op, serviceOp)
   }
 
-  override def expandNode(node: NodeT, context: NodeCompilationContext,
-                          env: WikidataEnvironment): NodeT =
+  override def expandNode(node: Node, context: NodeCompilationContext,
+                          env: WikidataEnvironment): Node =
   {
     (context, node.label) match {
       case (TripleNodeCompilationContext, label: TemporalLabel) =>
@@ -169,7 +169,7 @@ class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, Wikidata
     }
   }
 
-  override def prepareLeftFunctionExpression(leftExpr: Expr, otherNode: NodeT) =
+  override def prepareLeftFunctionExpression(leftExpr: Expr, otherNode: Node) =
     otherNode match {
       case Node(TemporalLabel(year: Year), _, _, _, _) =>
         new E_DateTimeYear(leftExpr)
