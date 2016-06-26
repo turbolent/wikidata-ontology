@@ -12,13 +12,3 @@ env:
 
 after_success:
   - .travis/deploy.sh
-
-cache:
-  directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot/
-
-before_cache:
-  # avoid unnecessary cache updates
-  - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
-  - find $HOME/.sbt -name "*.lock" -delete
