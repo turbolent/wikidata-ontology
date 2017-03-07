@@ -58,9 +58,11 @@ trait ComparativePropertyEdgeFactory {
       case PersonSubject =>
         val key = (lemmatizedProperty, lemmatizedFilter)
         personFactories.get(key)
+
       case ThingSubject =>
         val key = (lemmatizedProperty, lemmatizedFilter)
         thingFactories.get(key)
+
       case NamedSubject(subjectName) =>
         // TODO: adjectives
         val (_, subjectNameRest) = splitName(subjectName)

@@ -127,7 +127,6 @@ class WikidataSparqlBackend extends SparqlBackend[NodeLabel, EdgeLabel, Wikidata
 
       case NameLabel =>
         Left(JenaNodeFactory.createURI(RDFS_BASE + "label"))
-
     }
   }
 
